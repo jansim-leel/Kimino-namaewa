@@ -156,6 +156,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
 .hj2 { font-family: var(--serif); color: var(--muted); font-size: 1rem; margin-right: 4px; }
 .badge { font-size: 0.78rem; border: 1px solid var(--line); border-radius: 10px; padding: 0 8px; color: var(--muted); }
 .badge.mood { color: var(--accent); border-color: var(--accent); }
+.badge.unv { color: var(--fire); border-color: var(--fire); }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
   display: inline-flex; align-items: center; gap: 5px; font-size: 0.84rem; color: var(--ink);
@@ -263,6 +264,16 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
   </section>
 
   <section class="sec">
+    <h2>원하는 이름의 한자 찾기</h2>
+    <p class="sub">이름만 넣으면 쓸 수 있는 한자 조합을 사주 점수가 높은 순으로 보여줘요. 위에서 고른 날짜 탭이 기준이에요.</p>
+    <div class="field">
+      <label for="myname">이름 (두 글자, 손은 빼고)</label>
+      <input id="myname" type="text" maxlength="4" placeholder="예: 서준" autocomplete="off">
+    </div>
+    <div id="mine" class="sec"></div>
+  </section>
+
+  <section class="sec">
     <h2>날짜별 추천 이름</h2>
     <div class="tabs" id="tabs" role="tablist" aria-label="출생 날짜"></div>
     <div id="day" class="sec"></div>
@@ -284,7 +295,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
     <p><b>후보 이름.</b> 자연스럽게 읽히는 이름을 미리 정리해 둔 목록 안에서만 골라요. 빠진 이름이 있을 수 있어서, 체크하면 목록 밖 조합도 보여줘요.</p>
     <p><b>제외하는 이름.</b> 손 바로 뒤에서 연음이 생기는 이름(손우진 → 소누진), 손주·손가 같은 단어가 되는 이름(인기 이름 주원만 예외), ㄴ+ㄹ이 겹쳐 소리가 바뀌는 이름은 빼요. ㅐ/ㅔ처럼 혼동되는 모음은 기본으로 뺐고, 체크하면 넣어요.</p>
     <p><b>흔함 표시에 대해.</b> 2025년 출생신고 상위 5위(도윤, 이준, 시우, 하준, 태오)만 통계로 확인했어요. 나머지 인기 이름 분류는 추정이라 참고용이에요.</p>
-    <p><b>알아둘 점.</b> 월주는 절기 시각으로 정하고, 23~01시는 子時로 묶어 같은 날로 봤어요. 孫은 10획, 오행은 水로 보고 오행 개수에도 함께 셌어요. 한자의 오행은 출처마다 다를 수 있고, 작명 기준도 학파마다 달라서 사주 점수는 참고용이에요. 한자 후보는 <span id="hjn"></span>예요. 신고 전에 대법원 전자가족관계등록시스템에서 인명용 한자인지 확인하세요.</p>
+    <p><b>"검증 전" 한자.</b> 이름 찾기에서만 쓰는 글자의 한자는 획수·오행을 제가 정리한 값이라 틀린 곳이 있을 수 있어요. 수리 점수는 획수에 바로 영향을 받으니, 고르기 전에 인명용 한자인지와 획수를 꼭 확인하세요. 추천 목록에 쓰는 한자도 전수 검증은 하지 못했어요.</p>
+    <p><b>알아둘 점.</b> 월주는 절기 시각으로 정하고, 23~01시는 子時로 묶어 같은 날로 봤어요. 孫은 10획, 오행은 水로 보고 오행 개수에도 함께 셌어요. 한자의 오행은 출처마다 다를 수 있고, 작명 기준도 학파마다 달라서 사주 점수는 참고용이에요. 추천 목록에 쓰는 한자 후보는 <span id="hjn"></span>이고, 이름 찾기에서만 쓰는 글자는 따로 있어요. 신고 전에 대법원 전자가족관계등록시스템에서 인명용 한자인지 확인하세요.</p>
   </footer>
 </div>
 
@@ -342,6 +354,83 @@ const SYL_DATA = [
   ['람','ram','MT',[['嵐','산바람',12,2],['藍','쪽빛',18,0]]],
   ['훈','hun','C',[['勳','공',16,2],['薰','향풀',17,0],['訓','가르칠',10,3]]]
 ];
+// 이름 찾기 전용. 획수·오행을 직접 정리한 값이라 "검증 전"으로 표시해요. [음, 로마자, 태그, 한자들, ext]
+const EXT_DATA = [
+  ['건','geon','',[['建','세울',9,0],['健','굳셀',11,0]]],
+  ['겸','gyeom','',[['謙','겸손할',17,3]]],
+  ['찬','chan','',[['燦','빛날',17,1],['贊','도울',19,3]]],
+  ['휘','hwi','',[['輝','빛날',15,1],['暉','햇빛',13,1]]],
+  ['정','jeong','',[['貞','곧을',9,3],['正','바를',5,2],['禎','상서',14,0]]],
+  ['수','su','',[['秀','빼어날',7,0],['洙','물가',10,4],['樹','나무',16,0]]],
+  ['아','a','',[['雅','우아할',13,0],['兒','아이',8,0],['娥','예쁠',10,2]]],
+  ['연','yeon','',[['然','그럴',12,1],['淵','못',12,4],['娟','예쁠',10,2],['燕','제비',16,1]]],
+  ['소','so','',[['昭','밝을',9,1],['素','흴',10,0]]],
+  ['나','na','',[['娜','아리따울',10,2],['那','어찌',7,2],['羅','벌일',19,0]]],
+  ['다','da','',[['多','많을',6,4],['茶','차',12,0]]],
+  ['라','ra','',[['羅','벌일',19,0]]],
+  ['채','chae','',[['彩','채색',11,1],['采','캘',8,0],['菜','나물',14,0]]],
+  ['가','ga','',[['佳','아름다울',8,0],['嘉','아름다울',14,0],['家','집',10,0]]],
+  ['해','hae','',[['海','바다',11,4],['解','풀',13,3]]],
+  ['영','yeong','',[['英','꽃부리',11,0],['映','비칠',9,1],['永','길',5,4]]],
+  ['석','seok','',[['碩','클',14,3],['錫','주석',16,3]]],
+  ['동','dong','',[['東','동녘',8,0],['棟','마룻대',12,0],['洞','골',10,4]]],
+  ['상','sang','',[['相','서로',9,0],['祥','상서',11,0]]],
+  ['명','myeong','',[['明','밝을',8,1],['銘','새길',14,3]]],
+  ['범','beom','',[['凡','무릇',3,4],['範','법',15,0]]],
+  ['경','gyeong','',[['慶','경사',15,1],['景','볕',12,1],['敬','공경',12,3]]],
+  ['관','gwan','',[['寬','너그러울',15,0],['官','벼슬',8,0]]],
+  ['남','nam','',[['南','남녘',9,1],['楠','녹나무',13,0]]],
+  ['대','dae','',[['大','클',3,0],['岱','대산',8,2]]],
+  ['래','rae','',[['來','올',8,0]]],
+  ['령','ryeong','',[['玲','옥소리',10,3]]],
+  ['리','ri','',[['利','이로울',7,3],['理','다스릴',12,3],['里','마을',7,2],['梨','배',11,0]]],
+  ['무','mu','',[['茂','무성할',11,0],['武','호반',8,3]]],
+  ['미','mi','',[['美','아름다울',9,4],['眉','눈썹',9,0]]],
+  ['백','baek','',[['白','흰',5,3]]],
+  ['사','sa','',[['思','생각',9,1],['沙','모래',8,4]]],
+  ['산','san','',[['山','메',3,2],['珊','산호',10,3]]],
+  ['설','seol','',[['雪','눈',11,4]]],
+  ['송','song','',[['松','소나무',8,0],['頌','기릴',13,0]]],
+  ['슬','seul','',[['瑟','거문고',14,3]]],
+  ['신','sin','',[['信','믿을',9,3],['新','새',13,3],['愼','삼갈',14,1],['申','납',5,3]]],
+  ['양','yang','',[['陽','볕',17,1],['洋','바다',10,4],['楊','버들',13,0]]],
+  ['언','eon','',[['彦','선비',9,1],['言','말씀',7,3]]],
+  ['여','yeo','',[['如','같을',6,2],['汝','너',7,4]]],
+  ['열','yeol','',[['悅','기쁠',11,1],['烈','매울',10,1]]],
+  ['용','yong','',[['勇','날쌜',9,2],['容','얼굴',10,0],['龍','용',16,2]]],
+  ['욱','uk','',[['旭','아침 해',6,1],['煜','빛날',13,1]]],
+  ['위','wi','',[['偉','클',11,0]]],
+  ['의','ui','',[['義','옳을',13,2],['宜','마땅',8,0]]],
+  ['인','in','',[['仁','어질',4,0],['寅','범',11,0]]],
+  ['일','il','',[['日','날',4,1]]],
+  ['제','je','',[['濟','건널',18,4]]],
+  ['조','jo','',[['朝','아침',12,0],['照','비칠',13,1]]],
+  ['종','jong','',[['宗','마루',8,0],['種','씨',14,0]]],
+  ['중','jung','',[['重','무거울',9,3]]],
+  ['창','chang','',[['昌','창성할',8,1],['蒼','푸를',16,0]]],
+  ['철','cheol','',[['哲','밝을',10,3]]],
+  ['청','cheong','',[['淸','맑을',12,4],['靑','푸를',8,0]]],
+  ['초','cho','',[['楚','초나라',13,0],['初','처음',7,3]]],
+  ['춘','chun','',[['春','봄',9,0],['椿','참죽',13,0]]],
+  ['택','taek','',[['澤','못',17,4]]],
+  ['학','hak','',[['學','배울',16,4]]],
+  ['한','han','',[['漢','한수',15,4],['翰','편지',16,0],['韓','나라',17,3]]],
+  ['향','hyang','',[['香','향기',9,0]]],
+  ['혁','hyeok','',[['赫','빛날',14,1],['革','가죽',9,3]]],
+  ['형','hyeong','',[['炯','빛날',9,1],['亨','형통할',7,1],['馨','향기',20,1]]],
+  ['혜','hye','',[['惠','은혜',12,1],['慧','슬기',15,1]]],
+  ['홍','hong','',[['弘','클',5,3],['洪','넓을',10,4]]],
+  ['화','hwa','',[['和','화할',8,4],['花','꽃',10,0],['華','빛날',14,0]]],
+  ['환','hwan','',[['煥','빛날',13,1],['桓','굳셀',10,0]]],
+  ['효','hyo','',[['孝','효도',7,0],['曉','새벽',16,1]]],
+  ['희','hui','',[['熙','빛날',13,1],['喜','기쁠',12,4],['希','바랄',7,0]]],
+  ['광','gwang','',[['光','빛',6,1],['廣','넓을',15,0]]],
+  ['근','geun','',[['根','뿌리',10,0],['瑾','아름다운 옥',16,3]]],
+  ['문','mun','',[['文','글월',4,0]]],
+  ['봉','bong','',[['峯','봉우리',10,2]]],
+  ['덕','deok','',[['德','큰',15,1]]],
+  ['담','dam','',[['潭','못',16,4]]]
+];
 
 const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
 const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
@@ -376,9 +465,12 @@ const NAT = new Set();
 Object.keys(NAT_SRC).forEach(a => { for (const b of NAT_SRC[a]) NAT.add(a + b); });
 
 const SYL = SYL_DATA.map(([r, rom, tags, opts]) => ({
-  r, rom, tags, d: decomp(r),
-  opts: opts.map(([h, m, s, e]) => ({ h, m, s, e, r }))
-}));
+  r, rom, tags, d: decomp(r), ext: false,
+  opts: opts.map(([h, m, s, e]) => ({ h, m, s, e, r, v: false }))
+})).concat(EXT_DATA.map(([r, rom, tags, opts]) => ({
+  r, rom, tags, d: decomp(r), ext: true,
+  opts: opts.map(([h, m, s, e]) => ({ h, m, s, e, r, v: true }))
+})));
 
 function commonness(name) {
   if (T1.has(name)) return 1;
@@ -401,19 +493,20 @@ function rel(x, y) {
   return 0;
 }
 
-function evalSound(a, b, o) {
-  if (a.r === b.r) return null;
+// force가 true면(이름 찾기) 제외하지 않고 감점과 경고로만 알려줘요.
+function evalSound(a, b, o, force) {
   const name = a.r + b.r;
-  if (FIRST_BAD.has(a.r) && !FIRST_OK.has(name)) return null;
-  if (NAME_BAD.has(name)) return null;
-  const A = a.d, B = b.d;
-  const seq = [SURD, A, B];
   let ease = 100;
   const ok = [], warn = [];
+  if (a.r === b.r) { if (!force) return null; ease -= 8; warn.push('두 글자가 같아요'); }
+  if (FIRST_BAD.has(a.r) && !FIRST_OK.has(name)) { if (!force) return null; ease -= 15; warn.push('"손' + a.r + '"이 다른 단어로 들릴 수 있어요'); }
+  if (NAME_BAD.has(name)) { if (!force) return null; ease -= 15; warn.push('소리가 어색하게 들릴 수 있는 이름이에요'); }
+  const A = a.d, B = b.d;
+  const seq = [SURD, A, B];
   let liaison = false, inner = false;
   for (let i = 0; i < 2; i++) {
     const L = seq[i], R = seq[i + 1];
-    if (L.jong === 'ㄴ' && R.cho === 'ㄹ') return null;
+    if (L.jong === 'ㄴ' && R.cho === 'ㄹ') { if (!force) return null; ease -= 15; warn.push('ㄴ+ㄹ이 겹쳐 소리가 바뀌어요'); }
     if (L.jong && L.jong !== 'ㅇ' && R.cho === 'ㅇ') { if (i === 0) liaison = true; else inner = true; }
   }
   if (liaison) {
@@ -442,6 +535,41 @@ function moodBonus(a, b, mood) {
   return n === 2 ? 24 : n === 1 ? 10 : 0;
 }
 
+function makeCombos(a, b, name) {
+  const combos = [];
+  for (const ha of a.opts) for (const hb of b.opts) {
+    const n = [ha.s + hb.s, SUR.s + ha.s, SUR.s + hb.s, SUR.s + ha.s + hb.s];
+    const suri = n.filter(x => GOOD.has(x)).length * 8.75;
+    const yy = (ha.s % 2 === 0 && hb.s % 2 === 0) ? 0 : 5;
+    const flow = 0.4 * rel(SUR.e, ha.e) + 0.6 * rel(ha.e, hb.e);
+    combos.push({ ha, hb, n, st: suri + yy + flow, k: name + ':' + ha.h + hb.h });
+  }
+  return combos;
+}
+// 사용자가 직접 넣은 이름. 걸러내지 않고 경고만 붙여서 모든 한자 조합을 돌려줘요.
+function lookupName(raw) {
+  let t = String(raw).replace(/\s+/g, '');
+  if (t.length === 3 && t[0] === '손') t = t.slice(1);
+  if (!/^[가-힣]{2}$/.test(t)) return { err: '한글 두 글자로 입력해 주세요. 손은 빼고 넣어요. 예: 서준' };
+  const a = SYL.find(x => x.r === t[0]), b = SYL.find(x => x.r === t[1]);
+  const miss = [];
+  if (!a) miss.push(t[0]);
+  if (!b) miss.push(t[1]);
+  if (miss.length) {
+    return { err: miss.map(x => '"' + x + '"').join(', ') + ' 글자는 아직 한자 데이터가 없어요. 쓸 수 있는 글자: ' + SYL.map(x => x.r).join(' ') };
+  }
+  const name = a.r + b.r;
+  const sd = evalSound(a, b, { avoidLiaison: false, allowConf: true }, true);
+  const tagSet = [];
+  for (const ch of a.tags + b.tags) if (tagSet.indexOf(ch) < 0) tagSet.push(ch);
+  return { nm: {
+    a, b, name, c: commonness(name), ease: sd.ease, ok: sd.ok, warn: sd.warn,
+    soundRaw: 0, bonus: 0, soundPct: null,
+    rom: 'Son ' + a.rom[0].toUpperCase() + a.rom.slice(1) + '-' + b.rom,
+    tags: tagSet.slice(0, 2), combos: makeCombos(a, b, name)
+  } };
+}
+
 function buildNames(o) {
   const t = o.uq / 100;
   const target = 1 - 0.65 * t;
@@ -453,6 +581,7 @@ function buildNames(o) {
     if (tok.length === 1) avS.add(tok); else if (tok.length === 2) avN.add(tok);
   });
   for (const a of SYL) for (const b of SYL) {
+    if (a.ext || b.ext) continue;
     if (avS.has(a.r) || avS.has(b.r) || avN.has(a.r + b.r)) continue;
     const s = evalSound(a, b, o);
     if (!s) continue;
@@ -462,14 +591,7 @@ function buildNames(o) {
     const c = commonness(name);
     const fit = 10 * Math.max(0, 1 - Math.abs(c - target) / 0.7);
     const snd = s.ease * 0.2 + (natural ? 15 : 3) + fit;
-    const combos = [];
-    for (const ha of a.opts) for (const hb of b.opts) {
-      const n = [ha.s + hb.s, SUR.s + ha.s, SUR.s + hb.s, SUR.s + ha.s + hb.s];
-      const suri = n.filter(x => GOOD.has(x)).length * 8.75;
-      const yy = (ha.s % 2 === 0 && hb.s % 2 === 0) ? 0 : 5;
-      const flow = 0.4 * rel(SUR.e, ha.e) + 0.6 * rel(ha.e, hb.e);
-      combos.push({ ha, hb, n, st: suri + yy + flow, k: name + ':' + ha.h + hb.h });
-    }
+    const combos = makeCombos(a, b, name);
     const tagSet = [];
     for (const ch of a.tags + b.tags) if (tagSet.indexOf(ch) < 0) tagSet.push(ch);
     // 분위기를 골랐으면 그 태그가 실제로 있는 이름에만 뱃지가 붙도록, 해당 태그를 앞으로 정렬
@@ -610,13 +732,13 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
       : '';
     return '<li class="row"><div class="rk">' + rank + '</div><div class="bd">' +
       '<div class="nm"><span class="hg">손' + nm.name + '</span><span class="rom">' + nm.rom + '</span></div>' +
-      '<div class="hjline"><span class="hj2">孫' + combo.ha.h + combo.hb.h + '</span><span class="badge">' + cBadge(nm.c) + '</span>' + moodBadges + '</div>' +
+      '<div class="hjline"><span class="hj2">孫' + combo.ha.h + combo.hb.h + '</span><span class="badge">' + cBadge(nm.c) + '</span>' + moodBadges + ((combo.ha.v || combo.hb.v) ? '<span class="badge unv" title="획수·오행을 검증하지 못한 한자예요">검증 전</span>' : '') + '</div>' +
       '<div class="chips">' + chip(combo.ha) + chip(combo.hb) + '</div>' +
       '<div class="snd">' + sndHTML(nm) + '</div>' +
       '<div class="suri">' + suriHTML(combo.n) + '</div>' +
       '<div class="meta">' + extra + '</div>' + altHTML + '</div>' +
       '<div class="sc"><div class="num">' + Math.min(100, Math.round(score)) + '</div><div class="bar"><i style="width:' + Math.min(100, Math.round(score)) + '%"></i></div>' +
-      '<div class="parts">소리 ' + Math.min(100, Math.round(nm.soundPct)) + '<br>사주 ' + Math.round(saju) + '</div>' +
+      '<div class="parts">' + (nm.soundPct == null ? '' : '소리 ' + Math.min(100, Math.round(nm.soundPct)) + '<br>') + '사주 ' + Math.round(saju) + '</div>' +
       '<button class="star" data-k="' + k + '" aria-pressed="' + on + '" aria-label="후보에 담기">' + (on ? '★' : '☆') + '</button></div></li>';
   }
 
@@ -682,7 +804,7 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
       const b = arr[0];
       return { i, nm, score: b.score, best: b, min: minC[i][b.ci], max: maxC[i][b.ci], alts: arr.slice(1, 3) };
     });
-    return { names, days, avgTop: pickTop(avgItems, 5), o };
+    return { names, days, avgTop: pickTop(avgItems, 5), o, normS: sN > 20 ? normS : null };
   }
 
   function offLabel(off) { return off === 0 ? '예정일' : (off > 0 ? '+' : '−') + Math.abs(off) + '일'; }
@@ -736,6 +858,28 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
     }).join('') + '</ol>';
   }
 
+  function renderMine() {
+    const box = $('#mine');
+    const raw = $('#myname').value;
+    if (!raw.trim()) { box.innerHTML = '<div class="empty">이름을 입력하면 한자 조합이 나와요. 예: 서준, 하은, 소연</div>'; return; }
+    const r = lookupName(raw);
+    if (r.err) { box.innerHTML = '<div class="empty">' + r.err + '</div>'; return; }
+    if (!state) { box.innerHTML = '<div class="empty">출산 예정일을 먼저 입력해 주세요.</div>'; return; }
+    const nm = r.nm;
+    const norm = state.normS || (x => Math.max(0, Math.min(100, x)));
+    const per = state.days.map(d => sajuDay(d.slots, [nm])[0]);
+    const day = state.days[sel];
+    const items = nm.combos.map((c, ci) => {
+      let sum = 0;
+      per.forEach(p => { sum += p[ci].saju; });
+      return { ci, avg: norm(sum / per.length), cur: norm(per[sel][ci].saju), bi: per[sel][ci].bi };
+    }).sort((x, y) => y.avg - x.avg || x.ci - y.ci);
+    const top = items.slice(0, 8);
+    box.innerHTML = '<p class="sub">손' + nm.name + ' · 쓸 수 있는 한자 조합 ' + items.length + '가지 중 사주 점수가 높은 ' + top.length + '개예요. (7일 평균 기준)</p>' +
+      '<ol class="list">' + top.map((it, n) => rowHTML(nm, nm.combos[it.ci], it.avg, it.avg,
+        '7일 평균 ' + Math.round(it.avg) + '점 · ' + day.mo + '/' + day.d + ' 기준 ' + Math.round(it.cur) + '점, <b>' + SLOT[it.bi] + '</b>에 특히 잘 맞아요', [], n + 1)).join('') + '</ol>';
+  }
+
   function renderSaved() {
     const box = $('#saved');
     if (!saved.length) {
@@ -755,12 +899,14 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
       $('#tabs').innerHTML = '';
       $('#day').innerHTML = '<div class="empty">출산 예정일을 입력하면 앞뒤 3일의 추천 이름이 나와요.</div>';
       $('#avg').innerHTML = '';
+      renderMine();
       renderSaved();
       return;
     }
     renderTabs();
     renderDay();
     renderAvg();
+    renderMine();
     renderSaved();
   }
 
@@ -768,12 +914,12 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
     const i = saved.indexOf(k);
     if (i >= 0) saved.splice(i, 1); else saved.push(k);
     persist();
-    renderDay(); renderAvg(); renderSaved();
+    renderDay(); renderAvg(); renderMine(); renderSaved();
   }
 
   document.addEventListener('click', e => {
     const tab = e.target.closest('.tab');
-    if (tab) { sel = +tab.dataset.i; renderTabs(); renderDay(); return; }
+    if (tab) { sel = +tab.dataset.i; renderTabs(); renderDay(); renderMine(); return; }
     const star = e.target.closest('.star, .alt');
     if (star) { toggle(star.dataset.k); return; }
     const rm = e.target.closest('[data-rm]');
@@ -786,11 +932,14 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
   }
   let timer = null;
   function schedule() { updateVals(); clearTimeout(timer); timer = setTimeout(renderAll, 60); }
-  ['#due', '#avoid', '#mood', '#ws', '#uq', '#liai', '#conf', '#open'].forEach(s => {
+  ['#due', '#avoid', '#mood', '#ws', '#uq', '#liai', '#conf', '#open', '#myname'].forEach(s => {
     $(s).addEventListener('input', schedule);
   });
   const hn = $('#hjn');
-  if (hn) hn.textContent = SYL.length + '음절 ' + SYL.reduce((n, x) => n + x.opts.length, 0) + '자';
+  if (hn) {
+    const base = SYL.filter(x => !x.ext);
+    hn.textContent = base.length + '음절 ' + base.reduce((n, x) => n + x.opts.length, 0) + '자';
+  }
   updateVals();
   renderAll();
 })();
