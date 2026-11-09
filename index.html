@@ -1,0 +1,799 @@
+<!doctype html><html lang="ko"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>손씨네 작명첩</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700&display=swap">
+<style>
+/* Layout: one narrow column. Vermilion seal header, a condition panel with sliders, seven date tabs, then ranked name rows. */
+:root {
+  --bg: #ECF0EE;
+  --surface: #F8FAF9;
+  --ink: #15212B;
+  --muted: #566871;
+  --line: #CAD5D2;
+  --accent: #1D6B66;
+  --accent-ink: #FFFFFF;
+  --seal: #B3322B;
+  --seal-ink: #FFFFFF;
+  --wood: #357A47;
+  --fire: #BE4B33;
+  --earth: #8F6A18;
+  --metal: #5A6B7D;
+  --water: #2A58A0;
+  --serif: 'Noto Serif KR', 'Nanum Myeongjo', 'Apple SD Gothic Neo', serif;
+  --sans: 'Noto Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E161C;
+    --surface: #16212A;
+    --ink: #E5EEEA;
+    --muted: #93A5AC;
+    --line: #2A3A43;
+    --accent: #5CC2B6;
+    --accent-ink: #0E161C;
+    --seal: #CF4A41;
+    --wood: #7DC08C;
+    --fire: #EE8466;
+    --earth: #D9B25A;
+    --metal: #A9B8C8;
+    --water: #86AEE8;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E161C;
+  --surface: #16212A;
+  --ink: #E5EEEA;
+  --muted: #93A5AC;
+  --line: #2A3A43;
+  --accent: #5CC2B6;
+  --accent-ink: #0E161C;
+  --seal: #CF4A41;
+  --wood: #7DC08C;
+  --fire: #EE8466;
+  --earth: #D9B25A;
+  --metal: #A9B8C8;
+  --water: #86AEE8;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  padding-block: 22px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 30px; }
+h1, h2 { font-family: var(--serif); margin: 0; text-wrap: balance; }
+h1 { font-size: 1.7rem; line-height: 1.25; font-weight: 700; }
+h2 { font-size: 1.2rem; font-weight: 700; }
+p { margin: 0; }
+
+.head { display: flex; gap: 16px; align-items: center; }
+.seal {
+  flex: none; width: 58px; height: 58px; display: grid; place-items: center;
+  background: var(--seal); color: var(--seal-ink); border-radius: 4px;
+  font-family: var(--serif); font-weight: 700; font-size: 2rem; transform: rotate(-3deg);
+}
+.head p { color: var(--muted); margin-top: 6px; font-size: 0.9rem; max-width: 52ch; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+.form { display: flex; flex-direction: column; gap: 16px; }
+.row2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field label, .field .lab { font-size: 0.82rem; font-weight: 500; color: var(--muted); letter-spacing: 0.02em; }
+.field small { font-size: 0.78rem; color: var(--muted); }
+.labrow { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.val { font-family: var(--mono); font-size: 0.82rem; color: var(--accent); font-variant-numeric: tabular-nums; }
+input[type="date"], input[type="text"], input:not([type]), select {
+  font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line);
+  border-radius: 6px; padding: 9px 11px; min-width: 0; width: 100%;
+}
+select { width: auto; flex: none; }
+.row2 select { width: 100%; }
+input:focus-visible, select:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+.sl { display: flex; flex-direction: column; gap: 4px; }
+.sl .ends { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--ink); }
+.sl .ends span:first-child, .sl .ends span:last-child { max-width: 48%; }
+.sl .ends .r { text-align: right; }
+input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
+.checks { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.88rem; }
+.checks label { display: inline-flex; align-items: center; gap: 8px; }
+.checks input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+
+.sec { display: flex; flex-direction: column; gap: 14px; }
+.sub { color: var(--muted); font-size: 0.88rem; }
+
+.tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+.tab {
+  flex: 1 0 64px; display: flex; flex-direction: column; align-items: center; gap: 1px;
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 6px;
+  padding: 8px 4px; font: inherit; cursor: pointer;
+}
+.tab .off { font-size: 0.76rem; color: var(--muted); }
+.tab .dt { font-family: var(--mono); font-weight: 600; font-size: 0.95rem; }
+.tab .wd { font-size: 0.76rem; color: var(--muted); }
+.tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.tab[aria-selected="true"] .off, .tab[aria-selected="true"] .wd { color: var(--accent-ink); }
+
+.dayhead { display: flex; flex-direction: column; gap: 4px; }
+.dayhead .when { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; }
+.dayhead .pil { font-size: 0.84rem; color: var(--muted); }
+.pil b { font-family: var(--serif); color: var(--ink); font-weight: 700; }
+
+.dist { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.dist div { display: flex; flex-direction: column; gap: 4px; align-items: stretch; }
+.dist .lb { font-size: 0.82rem; color: var(--muted); display: flex; justify-content: space-between; gap: 4px; }
+.dist .lb b { font-family: var(--serif); color: var(--ink); }
+.dist .lb span { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.dist .tr { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.dist .tr i { display: block; height: 100%; border-radius: 3px; }
+.dist .wood i { background: var(--wood); } .dist .fire i { background: var(--fire); }
+.dist .earth i { background: var(--earth); } .dist .metal i { background: var(--metal); }
+.dist .water i { background: var(--water); }
+.need { font-size: 0.88rem; }
+.need b { font-family: var(--serif); }
+
+.list { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.row { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr) 4.4rem; gap: 12px; padding: 14px; border-top: 1px solid var(--line); }
+.row:first-child { border-top: 0; }
+.rk { font-family: var(--mono); font-weight: 600; color: var(--muted); padding-top: 4px; font-variant-numeric: tabular-nums; }
+.bd { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.nm { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 12px; }
+.hg { font-family: var(--serif); font-weight: 700; font-size: 1.4rem; line-height: 1.2; }
+.rom { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); }
+.hjline { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; }
+.hj2 { font-family: var(--serif); color: var(--muted); font-size: 1rem; margin-right: 4px; }
+.badge { font-size: 0.78rem; border: 1px solid var(--line); border-radius: 10px; padding: 0 8px; color: var(--muted); }
+.badge.mood { color: var(--accent); border-color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 0.84rem; color: var(--ink);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 2px 7px;
+}
+.chip .hj { font-family: var(--serif); font-size: 0.95rem; }
+.el { font-style: normal; font-family: var(--serif); font-weight: 700; font-size: 0.78rem; padding-left: 5px; border-left: 1px solid var(--line); }
+.el.wood { color: var(--wood); } .el.fire { color: var(--fire); } .el.earth { color: var(--earth); }
+.el.metal { color: var(--metal); } .el.water { color: var(--water); }
+.snd { font-size: 0.84rem; color: var(--ink); }
+.snd .w { color: var(--fire); }
+.suri { display: flex; flex-wrap: wrap; gap: 4px 12px; font-family: var(--mono); font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.suri .ok { color: var(--accent); font-weight: 600; }
+.suri .no { color: var(--muted); }
+.meta { font-size: 0.84rem; color: var(--muted); }
+.alts { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 0.82rem; color: var(--muted); }
+.alt {
+  font: inherit; font-size: 0.84rem; background: var(--bg); color: var(--ink); border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 12px; min-height: 38px; cursor: pointer;
+}
+.alt .hj { font-family: var(--serif); }
+.sc { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.num { font-family: var(--mono); font-weight: 600; font-size: 1.35rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.bar { width: 100%; height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--accent); }
+.parts { font-family: var(--mono); font-size: 0.74rem; color: var(--muted); text-align: right; line-height: 1.35; font-variant-numeric: tabular-nums; }
+.star {
+  font: inherit; font-size: 1.5rem; line-height: 1; background: none; border: 0; padding: 0;
+  min-width: 44px; min-height: 44px; margin-right: -8px;
+  color: var(--accent); cursor: pointer;
+}
+
+.empty { padding: 18px 16px; color: var(--muted); font-size: 0.9rem; background: var(--surface); border: 1px dashed var(--line); border-radius: 8px; }
+.saved { display: flex; flex-wrap: wrap; gap: 8px; }
+.pick {
+  display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 6px 6px 12px;
+}
+.pick .hg { font-size: 1.1rem; }
+.pick .hj2 { font-size: 0.85rem; margin: 0; }
+.pick button { font: inherit; background: none; border: 0; color: var(--muted); cursor: pointer; padding: 2px 6px; }
+
+.notes { font-size: 0.8rem; color: var(--muted); display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 16px; }
+.notes b { color: var(--ink); font-weight: 500; }
+
+@media (max-width: 420px) {
+  h1 { font-size: 1.45rem; }
+  .row { grid-template-columns: 1.3rem minmax(0, 1fr) 3.8rem; gap: 10px; padding: 12px; }
+  .hg { font-size: 1.25rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tab, .star, .alt { transition: background 0.15s, color 0.15s; }
+}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <div class="seal" aria-hidden="true">孫</div>
+    <div>
+      <h1>손씨네 작명첩</h1>
+      <p>출생 시각을 몰라도 괜찮아요. 예정일 앞뒤 3일을 12시진으로 계산하고, 소리가 자연스러운 이름에 사주에 맞는 한자를 붙여 날짜별로 10개씩 뽑아요.</p>
+    </div>
+  </header>
+
+  <section class="panel form" aria-label="조건 입력">
+    <div class="field">
+      <label for="due">출산 예정일</label>
+      <input id="due" type="date" value="2026-12-01">
+      <small>예시 날짜예요. 예정일로 바꿔 주세요.</small>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="avoid">피하고 싶은 글자·이름 (선택)</label>
+        <input id="avoid" type="text" placeholder="예: 준, 현, 서준" autocomplete="off">
+        <small>쉼표로 구분해요. 두 글자는 그 이름만 빼요.</small>
+      </div>
+      <div class="field">
+        <label for="mood">분위기</label>
+        <select id="mood">
+          <option value="">전체</option>
+          <option value="M">도시적·모던</option>
+          <option value="N">단정·지적</option>
+          <option value="T">자연</option>
+          <option value="C">클래식</option>
+        </select>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field sl">
+        <div class="labrow"><span class="lab">무엇을 더 볼까요</span><span class="val" id="wsv"></span></div>
+        <input id="ws" type="range" min="0" max="100" value="50" aria-label="소리와 사주 비중">
+        <div class="ends"><span>소리·분위기</span><span class="r">사주</span></div>
+      </div>
+      <div class="field sl">
+        <div class="labrow"><span class="lab">이름 스타일</span><span class="val" id="uqv"></span></div>
+        <input id="uq" type="range" min="0" max="100" value="70" aria-label="흔함과 독특함">
+        <div class="ends"><span>익숙한 이름</span><span class="r">독특한 이름</span></div>
+      </div>
+    </div>
+    <div class="checks">
+      <label><input id="liai" type="checkbox" checked> 손 뒤 연음 피하기 (손우 → "소누")</label>
+      <label><input id="conf" type="checkbox"> 혼동 음절 포함 (재/제, 배/베)</label>
+      <label><input id="open" type="checkbox"> 목록 밖 조합도 포함 (독특하지만 어색할 수 있어요)</label>
+    </div>
+  </section>
+
+  <section class="sec">
+    <h2>날짜별 추천 이름</h2>
+    <div class="tabs" id="tabs" role="tablist" aria-label="출생 날짜"></div>
+    <div id="day" class="sec"></div>
+  </section>
+
+  <section class="sec">
+    <h2>7일 평균이 높은 이름</h2>
+    <p class="sub">날짜가 바뀌어도 점수가 안정적인 이름이에요. 출산일이 많이 흔들릴 때 참고하세요.</p>
+    <div id="avg"></div>
+  </section>
+
+  <section class="sec">
+    <h2>내 후보</h2>
+    <div id="saved"></div>
+  </section>
+
+  <footer class="notes">
+    <p><b>점수 구성.</b> 소리 쪽은 발음 편의, 이름으로서 자연스러운 정도, 흔함, 분위기이고, 사주 쪽은 오행 보완·수리 4격·오행 흐름·음양이에요. 두 점수는 퍼지는 폭이 달라서 같은 눈금(평균 50)으로 맞춘 뒤 위 슬라이더 비율로 섞어요. 분위기는 소리 쪽 가점이라 사주 비중이 높을수록 영향이 줄어요. 이름을 먼저 정하고, 그 소리에 쓸 수 있는 한자 중 그 날 사주에 가장 맞는 조합을 골라요.</p>
+    <p><b>후보 이름.</b> 자연스럽게 읽히는 이름을 미리 정리해 둔 목록 안에서만 골라요. 빠진 이름이 있을 수 있어서, 체크하면 목록 밖 조합도 보여줘요.</p>
+    <p><b>제외하는 이름.</b> 손 바로 뒤에서 연음이 생기는 이름(손우진 → 소누진), 손주·손가 같은 단어가 되는 이름(인기 이름 주원만 예외), ㄴ+ㄹ이 겹쳐 소리가 바뀌는 이름은 빼요. ㅐ/ㅔ처럼 혼동되는 모음은 기본으로 뺐고, 체크하면 넣어요.</p>
+    <p><b>흔함 표시에 대해.</b> 2025년 출생신고 상위 5위(도윤, 이준, 시우, 하준, 태오)만 통계로 확인했어요. 나머지 인기 이름 분류는 추정이라 참고용이에요.</p>
+    <p><b>알아둘 점.</b> 월주는 절기 시각으로 정하고, 23~01시는 子時로 묶어 같은 날로 봤어요. 孫은 10획, 오행은 水로 보고 오행 개수에도 함께 셌어요. 한자의 오행은 출처마다 다를 수 있고, 작명 기준도 학파마다 달라서 사주 점수는 참고용이에요. 한자 후보는 <span id="hjn"></span>예요. 신고 전에 대법원 전자가족관계등록시스템에서 인명용 한자인지 확인하세요.</p>
+  </footer>
+</div>
+
+<script>
+//==LOGIC-START
+const STEMS = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+const STEMS_K = ['갑','을','병','정','무','기','경','신','임','계'];
+const BRANCHES = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+const BRANCHES_K = ['자','축','인','묘','진','사','오','미','신','유','술','해'];
+const STEM_EL = [0,0,1,1,2,2,3,3,4,4];
+const BR_EL = [4,2,0,0,2,1,1,2,3,3,2,4];
+const EL = ['木','火','土','金','水'];
+const ELK = ['목','화','토','금','수'];
+const ELCLS = ['wood','fire','earth','metal','water'];
+const SLOT = ['子時 23–01시','丑時 01–03시','寅時 03–05시','卯時 05–07시','辰時 07–09시','巳時 09–11시','午時 11–13시','未時 13–15시','申時 15–17시','酉時 17–19시','戌時 19–21시','亥時 21–23시'];
+const MOOD = { M: '도시적·모던', N: '단정·지적', T: '자연', C: '클래식' };
+
+// [음, 로마자, 분위기 태그(M 모던 · N 단정 · T 자연 · C 클래식), [[한자, 뜻, 원획, 오행(0木 1火 2土 3金 4水)], ...]]
+const SYL_DATA = [
+  ['서','seo','MN',[['序','차례',7,0],['棲','깃들일',12,0],['曙','새벽',18,1],['西','서녘',6,3]]],
+  ['준','jun','NC',[['峻','높을',10,2],['浚','깊을',11,4],['埈','높을',10,2],['駿','준마',17,1]]],
+  ['도','do','M',[['島','섬',14,2],['燾','비칠',18,1]]],
+  ['시','si','M',[['時','때',10,1],['詩','시',13,3]]],
+  ['하','ha','MT',[['河','물',9,4],['夏','여름',10,1],['賀','하례',12,3]]],
+  ['지','ji','NM',[['智','슬기',12,1],['志','뜻',7,1],['池','못',7,4]]],
+  ['호','ho','C',[['昊','하늘',8,1],['浩','넓을',11,4],['湖','호수',13,4],['鎬','호경',18,3]]],
+  ['민','min','N',[['旻','하늘',8,1],['民','백성',5,4],['岷','산 이름',8,2]]],
+  ['현','hyeon','NC',[['炫','밝을',9,1],['鉉','솥귀',13,3],['泫','깊을',9,4],['賢','어질',16,3]]],
+  ['진','jin','CN',[['津','나루',10,4],['鎭','누를',18,3],['晉','나아갈',10,1]]],
+  ['성','seong','C',[['晟','밝을',10,1],['城','성',9,2],['星','별',9,1]]],
+  ['승','seung','C',[['昇','오를',8,1]]],
+  ['빈','bin','M',[['彬','빛날',11,0]]],
+  ['단','dan','N',[['檀','박달나무',17,0],['旦','아침',5,1]]],
+  ['기','gi','C',[['基','터',11,2],['沂','물 이름',8,4]]],
+  ['규','gyu','C',[['圭','홀',6,2]]],
+  ['강','gang','C',[['剛','굳셀',10,3],['康','편안',11,0]]],
+  ['우','u','TM',[['宇','집',6,2],['雨','비',8,4],['羽','깃',6,1]]],
+  ['윤','yun','MN',[['潤','윤택할',16,4],['昀','햇빛',8,1],['贇','예쁠',19,3]]],
+  ['은','eun','NM',[['銀','은',14,3],['垠','지경',9,2],['恩','은혜',10,1]]],
+  ['안','an','M',[['安','편안',6,2],['岸','언덕',8,2]]],
+  ['율','yul','M',[['栗','밤',10,0]]],
+  ['온','on','MT',[['溫','따뜻할',14,4]]],
+  ['원','won','CN',[['源','근원',14,4],['垣','담',9,2]]],
+  ['오','o','T',[['梧','오동나무',11,0],['悟','깨달을',11,1]]],
+  ['유','yu','MN',[['柔','부드러울',9,0],['維','맬',14,0]]],
+  ['이','i','M',[['怡','기쁠',9,1],['利','이로울',7,3]]],
+  ['로','ro','M',[['露','이슬',21,4]]],
+  ['주','ju','N',[['宙','집',8,2],['柱','기둥',9,0],['朱','붉을',6,0],['澍','단비',16,4]]],
+  ['재','jae','N',[['在','있을',6,2],['才','재주',3,0]]],
+  ['태','tae','C',[['泰','클',10,4]]],
+  ['세','se','M',[['洗','씻을',10,4]]],
+  ['후','hu','MN',[['厚','두터울',9,2],['后','임금',6,4]]],
+  ['선','seon','NC',[['宣','베풀',9,2],['善','착할',12,2],['瑄','도리옥',14,3]]],
+  ['예','ye','N',[['睿','슬기',14,1]]],
+  ['람','ram','MT',[['嵐','산바람',12,2],['藍','쪽빛',18,0]]],
+  ['훈','hun','C',[['勳','공',16,2],['薰','향풀',17,0],['訓','가르칠',10,3]]]
+];
+
+const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+const JONG = ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+function decomp(ch) {
+  const c = ch.charCodeAt(0) - 0xAC00;
+  return { cho: CHO[Math.floor(c / 588)], jung: JUNG[Math.floor((c % 588) / 28)], jong: JONG[c % 28] };
+}
+const SURD = decomp('손');
+const SUR = { h: '孫', r: '손', s: 10, e: 4 };
+const GOOD = new Set([1,3,5,6,7,8,11,13,15,16,17,18,21,23,24,25,29,31,32,33,35,37,38,39,41,45,47,48,52,57,61,63,65,67,68,81]);
+const CONF = new Set(['ㅐ','ㅔ','ㅒ','ㅙ','ㅞ','ㅚ']);
+const FIRST_BAD = new Set(['주','가','해','수','녀','님','바','목','잡','등']);
+const FIRST_OK = new Set(['주원']);
+const NAME_BAD = new Set(['서로','도로','하하','지지','시시','도도','성기']);
+const T1 = new Set(['도윤','이준','시우','하준','태오']);
+const T2 = new Set(['서준','은우','지호','민준','유준','이안','하민','승민','민우','지후','도현','현우','주원','서진','지안','시윤','선우','우진','예준','지우','준우','도하','하람','로운','시안','서윤','하윤','하율','도훈','시온','지온','도원']);
+const POP = new Set(['준','서','도','윤','시','우','하','지','민','호','현','안','은','이','진','원','율']);
+// 이름처럼 자연스럽게 읽히는 조합(첫 글자: 뒤 글자들). 직접 정리한 목록이라 빠진 이름도 있어요.
+const NAT_SRC = {
+  '서': '준하안온율원우진호현빈민', '도': '윤하현원온율안진우준빈민훈',
+  '시': '안온윤우율현호진준빈민', '하': '준온율원진민성현우람',
+  '지': '안온율우원호현준민성후', '호': '준윤진원빈',
+  '민': '준우호규성기온율현', '현': '우준빈진율온성',
+  '진': '우원호서안율현규성온', '성': '우준민현빈호',
+  '승': '우민현준원호윤', '빈': '우준호현',
+  '단': '우율온', '기': '준현원윤우', '규': '민현빈원진', '강': '민현준우윤',
+  '재': '민현윤원우', '태': '윤민현준온율오우', '세': '준윤온현원',
+  '주': '원', '선': '우', '예': '준'
+};
+const NAT = new Set();
+Object.keys(NAT_SRC).forEach(a => { for (const b of NAT_SRC[a]) NAT.add(a + b); });
+
+const SYL = SYL_DATA.map(([r, rom, tags, opts]) => ({
+  r, rom, tags, d: decomp(r),
+  opts: opts.map(([h, m, s, e]) => ({ h, m, s, e, r }))
+}));
+
+function commonness(name) {
+  if (T1.has(name)) return 1;
+  if (T2.has(name)) return 0.8;
+  let n = 0;
+  for (const ch of name) if (POP.has(ch)) n++;
+  return 0.2 + 0.2 * n;
+}
+function cBadge(c) {
+  if (c >= 0.95) return '최상위 인기';
+  if (c >= 0.75) return '인기 이름';
+  if (c >= 0.55) return '익숙한 조합';
+  if (c >= 0.35) return '드문 편';
+  return '아주 드묾';
+}
+function rel(x, y) {
+  if (x === y) return 6;
+  if ((x + 1) % 5 === y) return 10;
+  if ((y + 1) % 5 === x) return 5;
+  return 0;
+}
+
+function evalSound(a, b, o) {
+  if (a.r === b.r) return null;
+  const name = a.r + b.r;
+  if (FIRST_BAD.has(a.r) && !FIRST_OK.has(name)) return null;
+  if (NAME_BAD.has(name)) return null;
+  const A = a.d, B = b.d;
+  const seq = [SURD, A, B];
+  let ease = 100;
+  const ok = [], warn = [];
+  let liaison = false, inner = false;
+  for (let i = 0; i < 2; i++) {
+    const L = seq[i], R = seq[i + 1];
+    if (L.jong === 'ㄴ' && R.cho === 'ㄹ') return null;
+    if (L.jong && L.jong !== 'ㅇ' && R.cho === 'ㅇ') { if (i === 0) liaison = true; else inner = true; }
+  }
+  if (liaison) {
+    if (o.avoidLiaison) return null;
+    ease -= 15; warn.push('손 뒤에서 연음이 생겨 다르게 들릴 수 있어요');
+  } else ok.push('손 뒤 연음 없음');
+  if (inner) { ease -= 4; warn.push('이름 안에서 연음이 돼요'); }
+  if (CONF.has(A.jung) || CONF.has(B.jung)) {
+    if (!o.allowConf) return null;
+    ease -= 12; warn.push('ㅐ/ㅔ처럼 혼동되기 쉬운 모음이 있어요');
+  } else ok.push('혼동 모음 없음');
+  if (['ㅅ','ㅈ','ㅊ'].indexOf(A.cho) >= 0) { ease -= 8; warn.push('손과 비슷한 ㅅ·ㅈ 소리가 이어져요'); }
+  if (A.cho === B.cho) { ease -= 8; warn.push('두 글자의 첫소리가 같아요'); }
+  if (A.jong && B.jong) { ease -= 6; warn.push('받침이 연달아 나와요'); }
+  for (const X of [A, B]) {
+    if (X.jong === 'ㅇ' || X.jong === 'ㅁ') ease -= 3;
+    if (['ㅘ','ㅝ','ㅢ','ㅟ'].indexOf(X.jung) >= 0) ease -= 6;
+  }
+  return { ease: Math.max(0, ease), ok, warn };
+}
+
+// 분위기 가점: 두 글자 모두 해당 분위기면 크게, 한 글자만이면 작게 (정규화한 소리 점수에 더해요)
+function moodBonus(a, b, mood) {
+  if (!mood) return 0;
+  const n = (a.tags.indexOf(mood) >= 0 ? 1 : 0) + (b.tags.indexOf(mood) >= 0 ? 1 : 0);
+  return n === 2 ? 24 : n === 1 ? 10 : 0;
+}
+
+function buildNames(o) {
+  const t = o.uq / 100;
+  const target = 1 - 0.65 * t;
+  const out = [];
+  // 피할 글자: 한 글자는 그 글자가 들어간 이름 전부, 두 글자는 그 이름만 뺀다
+  const avS = new Set(), avN = new Set();
+  o.avoid.forEach(tok => {
+    if (tok.length === 3 && tok[0] === '손') tok = tok.slice(1);
+    if (tok.length === 1) avS.add(tok); else if (tok.length === 2) avN.add(tok);
+  });
+  for (const a of SYL) for (const b of SYL) {
+    if (avS.has(a.r) || avS.has(b.r) || avN.has(a.r + b.r)) continue;
+    const s = evalSound(a, b, o);
+    if (!s) continue;
+    const name = a.r + b.r;
+    const natural = NAT.has(name);
+    if (!natural && !o.open) continue;
+    const c = commonness(name);
+    const fit = 10 * Math.max(0, 1 - Math.abs(c - target) / 0.7);
+    const snd = s.ease * 0.2 + (natural ? 15 : 3) + fit;
+    const combos = [];
+    for (const ha of a.opts) for (const hb of b.opts) {
+      const n = [ha.s + hb.s, SUR.s + ha.s, SUR.s + hb.s, SUR.s + ha.s + hb.s];
+      const suri = n.filter(x => GOOD.has(x)).length * 8.75;
+      const yy = (ha.s % 2 === 0 && hb.s % 2 === 0) ? 0 : 5;
+      const flow = 0.4 * rel(SUR.e, ha.e) + 0.6 * rel(ha.e, hb.e);
+      combos.push({ ha, hb, n, st: suri + yy + flow, k: name + ':' + ha.h + hb.h });
+    }
+    const tagSet = [];
+    for (const ch of a.tags + b.tags) if (tagSet.indexOf(ch) < 0) tagSet.push(ch);
+    // 분위기를 골랐으면 그 태그가 실제로 있는 이름에만 뱃지가 붙도록, 해당 태그를 앞으로 정렬
+    if (o.mood) tagSet.sort((x, y) => (y === o.mood) - (x === o.mood));
+    out.push({
+      a, b, name, c, ease: s.ease, ok: s.ok, warn: s.warn.concat(natural ? [] : ['흔한 이름 목록에 없는 조합이에요']),
+      soundRaw: snd, bonus: moodBonus(a, b, o.mood), soundPct: 0,
+      rom: 'Son ' + a.rom[0].toUpperCase() + a.rom.slice(1) + '-' + b.rom,
+      tags: tagSet.slice(0, 2), combos
+    });
+  }
+  return out;
+}
+
+function jdn(y, m, d) {
+  const a = Math.floor((14 - m) / 12);
+  const y2 = y + 4800 - a;
+  const m2 = m + 12 * a - 3;
+  return d + Math.floor((153 * m2 + 2) / 5) + 365 * y2 + Math.floor(y2 / 4) - Math.floor(y2 / 100) + Math.floor(y2 / 400) - 32045;
+}
+function sunLon(jd) {
+  const T = (jd - 2451545.0) / 36525;
+  const rad = Math.PI / 180;
+  const L0 = 280.46646 + 36000.76983 * T;
+  const M = (357.52911 + 35999.05029 * T) * rad;
+  const C = (1.914602 - 0.004817 * T) * Math.sin(M) + 0.019993 * Math.sin(2 * M) + 0.000289 * Math.sin(3 * M);
+  return (((L0 + C) % 360) + 360) % 360;
+}
+function pillars(y, m, d, slot) {
+  const hour = slot === 0 ? 0 : slot * 2;
+  const jd = Date.UTC(y, m - 1, d, hour - 9, 0, 0) / 86400000 + 2440587.5;
+  const lon = sunLon(jd);
+  let yr = y;
+  if (m <= 2 && lon >= 270 && lon < 315) yr = y - 1;
+  const ys = (((yr - 4) % 10) + 10) % 10, yb = (((yr - 4) % 12) + 12) % 12;
+  const mi = Math.floor((((lon - 315) % 360 + 360) % 360) / 30);
+  const mb = (2 + mi) % 12;
+  const ms = ((ys % 5) * 2 + 2 + mi) % 10;
+  const di = (((jdn(y, m, d) + 49) % 60) + 60) % 60;
+  const ds = di % 10, db = di % 12;
+  const hs = ((ds % 5) * 2 + slot) % 10;
+  return { y: [ys, yb], m: [ms, mb], d: [ds, db], h: [hs, slot] };
+}
+function dayData(y, m, d) {
+  const slots = [];
+  for (let s = 0; s < 12; s++) {
+    const p = pillars(y, m, d, s);
+    const c = [0, 0, 0, 0, 0];
+    for (const k of ['y', 'm', 'd', 'h']) { c[STEM_EL[p[k][0]]]++; c[BR_EL[p[k][1]]]++; }
+    slots.push({ p, c });
+  }
+  return slots;
+}
+// 이름마다 한자 조합별 사주 점수(12시진 평균)와 가장 잘 맞는 시진을 계산
+function sajuDay(slots, names) {
+  // 성(孫, 水)도 오행 개수에 넣어요. 이미 채워졌거나 넘치는 오행은 한자로 또 보태지 않게 감점이 음수까지 내려가요.
+  const contrib = slots.map(sl => {
+    const cc = sl.c.slice(); cc[SUR.e]++;
+    return cc.map(c => 12.5 * Math.max(0, 2 - c) - (c >= 3 ? 7 * (c - 2) : 0));
+  });
+  return names.map(nm => nm.combos.map(c => {
+    let sum = 0, best = -Infinity, bi = 0;
+    for (let s = 0; s < 12; s++) {
+      const e = Math.min(50, Math.max(-20, contrib[s][c.ha.e] + contrib[s][c.hb.e]));
+      const t = e + c.st;
+      sum += t;
+      if (t > best) { best = t; bi = s; }
+    }
+    return { saju: sum / 12, bi };
+  }));
+}
+function pickTop(items, count) {
+  const sorted = items.slice().sort((x, y) => y.score - x.score || x.i - y.i);
+  const used = {};
+  const out = [];
+  for (const it of sorted) {
+    const nm = it.nm;
+    if ((used[nm.a.r] || 0) >= 3 || (used[nm.b.r] || 0) >= 3) continue;
+    used[nm.a.r] = (used[nm.a.r] || 0) + 1;
+    used[nm.b.r] = (used[nm.b.r] || 0) + 1;
+    out.push(it);
+    if (out.length === count) break;
+  }
+  return out;
+}
+function dayTop(names, perCombo, ws, normS) {
+  const items = names.map((nm, i) => {
+    const arr = perCombo[i].map((r, ci) => { const sj = normS(r.saju); return { ci, saju: sj, bi: r.bi, score: mix(sj, nm.soundPct, ws) }; });
+    arr.sort((x, y) => y.score - x.score);
+    return { i, nm, score: arr[0].score, best: arr[0], alts: arr.slice(1, 3) };
+  });
+  return pickTop(items, 10);
+}
+// 소리와 사주는 점수가 퍼지는 폭이 달라서, 각각 평균 50·표준편차 16 눈금으로 맞춘 뒤 섞어요.
+function makeNorm(sum, sq, n) {
+  const mean = n ? sum / n : 0;
+  const sd = Math.max(Math.sqrt(Math.max(0, (n ? sq / n : 0) - mean * mean)), 1e-6);
+  return x => Math.max(0, Math.min(100, 50 + 16 * (x - mean) / sd));
+}
+// 한쪽 비중이 0이어도 다른 쪽으로 동점을 가르도록 아주 작은 값을 더해요.
+function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
+//==LOGIC-END
+
+(function () {
+  const $ = s => document.querySelector(s);
+  const WD = ['일','월','화','수','목','금','토'];
+  const KEY = 'sonssi-jakmyeongcheop-saved-v2';
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { saved = []; }
+  if (!Array.isArray(saved)) saved = [];
+  saved = saved.filter(k => typeof k === 'string' && k.indexOf(':') > 0);
+  let sel = 3;
+  let state = null;
+
+  function persist() { try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {} }
+
+  function chip(c) {
+    return '<span class="chip"><b class="hj">' + c.h + '</b>' + c.m + ' ' + c.r + '<i class="el ' + ELCLS[c.e] + '">' + EL[c.e] + '</i></span>';
+  }
+  function suriHTML(n) {
+    const L = ['원', '형', '이', '정'];
+    return n.map((x, i) => '<span class="' + (GOOD.has(x) ? 'ok' : 'no') + '">' + L[i] + ' ' + x + (GOOD.has(x) ? ' ✓' : '') + '</span>').join('');
+  }
+  function sndHTML(nm) {
+    const parts = nm.ok.slice();
+    const warn = nm.warn.map(w => '<span class="w">' + w + '</span>');
+    return '발음 · ' + parts.concat(warn).join(' · ');
+  }
+  function rowHTML(nm, combo, score, saju, extra, alts, rank) {
+    const k = combo.k;
+    const on = saved.indexOf(k) >= 0;
+    const moodBadges = nm.tags.map(t => '<span class="badge mood">' + MOOD[t] + '</span>').join('');
+    const altHTML = alts.length
+      ? '<div class="alts">같은 이름 다른 한자 · 누르면 후보에 담겨요' + alts.map(a => {
+          const c2 = nm.combos[a.ci];
+          return '<button class="alt" data-k="' + c2.k + '" aria-pressed="' + (saved.indexOf(c2.k) >= 0) + '" aria-label="' + nm.name + ' ' + c2.ha.h + c2.hb.h + ' 후보에 담기, 점수 ' + Math.min(100, Math.round(a.score)) + '" title="후보에 담기">' + (saved.indexOf(c2.k) >= 0 ? '★ ' : '') + '<span class="hj">' + c2.ha.h + c2.hb.h + '</span> ' + Math.min(100, Math.round(a.score)) + '</button>';
+        }).join('') + '</div>'
+      : '';
+    return '<li class="row"><div class="rk">' + rank + '</div><div class="bd">' +
+      '<div class="nm"><span class="hg">손' + nm.name + '</span><span class="rom">' + nm.rom + '</span></div>' +
+      '<div class="hjline"><span class="hj2">孫' + combo.ha.h + combo.hb.h + '</span><span class="badge">' + cBadge(nm.c) + '</span>' + moodBadges + '</div>' +
+      '<div class="chips">' + chip(combo.ha) + chip(combo.hb) + '</div>' +
+      '<div class="snd">' + sndHTML(nm) + '</div>' +
+      '<div class="suri">' + suriHTML(combo.n) + '</div>' +
+      '<div class="meta">' + extra + '</div>' + altHTML + '</div>' +
+      '<div class="sc"><div class="num">' + Math.min(100, Math.round(score)) + '</div><div class="bar"><i style="width:' + Math.min(100, Math.round(score)) + '%"></i></div>' +
+      '<div class="parts">소리 ' + Math.min(100, Math.round(nm.soundPct)) + '<br>사주 ' + Math.round(saju) + '</div>' +
+      '<button class="star" data-k="' + k + '" aria-pressed="' + on + '" aria-label="후보에 담기">' + (on ? '★' : '☆') + '</button></div></li>';
+  }
+
+  function options() {
+    return {
+      avoid: $('#avoid').value.split(/[,\s、]+/).filter(Boolean),
+      mood: $('#mood').value,
+      uq: +$('#uq').value,
+      avoidLiaison: $('#liai').checked,
+      allowConf: $('#conf').checked,
+      open: $('#open').checked
+    };
+  }
+
+  function compute() {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec($('#due').value);
+    if (!m) return null;
+    const o = options();
+    const ws = +$('#ws').value / 100;
+    const names = buildNames(o);
+    const base = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+    const perDays = [];
+    let sS = 0, sQ = 0, sN = 0;
+    for (let off = -3; off <= 3; off++) {
+      const dt0 = new Date(base + off * 86400000);
+      const slots0 = dayData(dt0.getUTCFullYear(), dt0.getUTCMonth() + 1, dt0.getUTCDate());
+      const per0 = names.length ? sajuDay(slots0, names) : [];
+      per0.forEach(arr => arr.forEach(r => { sS += r.saju; sQ += r.saju * r.saju; sN++; }));
+      perDays.push({ slots: slots0, per: per0 });
+    }
+    const normS = makeNorm(sS, sQ, sN);
+    if (names.length) {
+      let nS = 0, nQ = 0;
+      names.forEach(nm => { nS += nm.soundRaw; nQ += nm.soundRaw * nm.soundRaw; });
+      const normN = makeNorm(nS, nQ, names.length);
+      names.forEach(nm => { nm.soundPct = normN(nm.soundRaw) + nm.bonus; });
+    }
+    const days = [];
+    const sumC = names.map(nm => nm.combos.map(() => 0));
+    const minC = names.map(nm => nm.combos.map(() => 1000));
+    const maxC = names.map(nm => nm.combos.map(() => -1));
+    for (let off = -3; off <= 3; off++) {
+      const dt = new Date(base + off * 86400000);
+      const y = dt.getUTCFullYear(), mo = dt.getUTCMonth() + 1, d = dt.getUTCDate();
+      const { slots, per } = perDays[off + 3];
+      let top = [];
+      if (names.length) {
+        per.forEach((arr, i) => arr.forEach((r, ci) => {
+          const sc = mix(normS(r.saju), names[i].soundPct, ws);
+          sumC[i][ci] += r.saju;
+          minC[i][ci] = Math.min(minC[i][ci], sc);
+          maxC[i][ci] = Math.max(maxC[i][ci], sc);
+        }));
+        top = dayTop(names, per, ws, normS);
+      }
+      days.push({ off, y, mo, d, wd: dt.getUTCDay(), slots, top });
+    }
+    const avgItems = names.map((nm, i) => {
+      const arr = nm.combos.map((c, ci) => {
+        const saju = normS(sumC[i][ci] / 7);
+        return { ci, saju, score: mix(saju, nm.soundPct, ws) };
+      }).sort((x, y) => y.score - x.score);
+      const b = arr[0];
+      return { i, nm, score: b.score, best: b, min: minC[i][b.ci], max: maxC[i][b.ci], alts: arr.slice(1, 3) };
+    });
+    return { names, days, avgTop: pickTop(avgItems, 5), o };
+  }
+
+  function offLabel(off) { return off === 0 ? '예정일' : (off > 0 ? '+' : '−') + Math.abs(off) + '일'; }
+
+  function renderTabs() {
+    $('#tabs').innerHTML = state.days.map((d, i) =>
+      '<button class="tab" role="tab" data-i="' + i + '" aria-selected="' + (i === sel) + '">' +
+      '<span class="off">' + offLabel(d.off) + '</span><span class="dt">' + d.mo + '/' + d.d + '</span><span class="wd">' + WD[d.wd] + '</span></button>').join('');
+  }
+
+  function emptyMsg() {
+    return '조건에 맞는 이름이 없어요. 피하고 싶은 글자를 줄이거나, 연음·혼동 음절·목록 밖 조합 옵션을 켜 보세요.';
+  }
+
+  function renderDay() {
+    const box = $('#day');
+    const day = state.days[sel];
+    if (!state.names.length) { box.innerHTML = '<div class="empty">' + emptyMsg() + '</div>'; return; }
+    const avgC = [0, 0, 0, 0, 0];
+    day.slots.forEach(sl => sl.c.forEach((c, i) => { avgC[i] += c / 12; }));
+    const dp = day.slots[0].p.d;
+    const months = [];
+    day.slots.forEach(sl => {
+      const ms = STEMS[sl.p.m[0]] + BRANCHES[sl.p.m[1]];
+      const mk = STEMS_K[sl.p.m[0]] + BRANCHES_K[sl.p.m[1]];
+      if (!months.some(x => x[0] === ms)) months.push([ms, mk]);
+    });
+    const monthTxt = months.map(x => '<b>' + x[0] + '月</b> ' + x[1] + '월').join(' · ') + (months.length > 1 ? ' (절기가 바뀌는 날)' : '');
+    const dist = avgC.map((v, i) =>
+      '<div class="' + ELCLS[i] + '"><div class="lb"><b>' + EL[i] + '</b><span>' + v.toFixed(1) + '</span></div><div class="tr"><i style="width:' + Math.min(100, v / 4 * 100) + '%"></i></div></div>').join('');
+    const avg2 = avgC.slice(); avg2[SUR.e] += 1;
+    const low = avg2.map((v, i) => ({ v, i })).filter(x => x.v < 2).sort((a, b) => a.v - b.v).slice(0, 2).map(x => '<b>' + EL[x.i] + '</b>(' + ELK[x.i] + ')');
+    const need = low.length ? '이 날은 ' + low.join(', ') + ' 기운이 적은 편이에요(성 孫의 水 포함, 시간 평균 2개 미만). 이 오행의 한자에 점수를 더 줘요.' : '이 날은 오행이 고른 편이라 사주 쪽 점수는 획수와 흐름이 좌우해요.';
+    const dayp = '<b>' + STEMS[dp[0]] + BRANCHES[dp[1]] + '日</b> ' + STEMS_K[dp[0]] + BRANCHES_K[dp[1]] + '일';
+    box.innerHTML =
+      '<div class="dayhead"><div class="when">' + day.y + '년 ' + day.mo + '월 ' + day.d + '일 (' + WD[day.wd] + ') · ' + offLabel(day.off) + '</div>' +
+      '<div class="pil">' + dayp + ' · ' + monthTxt + '</div></div>' +
+      '<div class="panel sec"><div class="sub">시간을 평균한 오행 분포 (여덟 글자 중 개수)</div><div class="dist">' + dist + '</div><p class="need">' + need + '</p></div>' +
+      '<ol class="list">' + day.top.map((it, n) => {
+        const combo = it.nm.combos[it.best.ci];
+        return rowHTML(it.nm, combo, it.score, it.best.saju, '이 한자는 <b>' + SLOT[it.best.bi] + '</b>에 특히 잘 맞아요', it.alts, n + 1);
+      }).join('') + '</ol>';
+  }
+
+  function renderAvg() {
+    const box = $('#avg');
+    if (!state.names.length) { box.innerHTML = '<div class="empty">' + emptyMsg() + '</div>'; return; }
+    box.innerHTML = '<ol class="list">' + state.avgTop.map((it, n) => {
+      const combo = it.nm.combos[it.best.ci];
+      return rowHTML(it.nm, combo, it.score, it.best.saju, '7일 중 ' + Math.min(100, Math.round(it.min)) + '~' + Math.min(100, Math.round(it.max)) + '점', it.alts, n + 1);
+    }).join('') + '</ol>';
+  }
+
+  function renderSaved() {
+    const box = $('#saved');
+    if (!saved.length) {
+      box.innerHTML = '<div class="empty">마음에 드는 이름의 ☆를 누르면 여기에 모여요. 이 기기의 이 브라우저에만 저장돼요.</div>';
+      return;
+    }
+    box.innerHTML = '<div class="saved">' + saved.map(k => {
+      const parts = k.split(':');
+      return '<span class="pick"><span class="hg">손' + parts[0] + '</span><span class="hj2">孫' + parts[1] + '</span>' +
+        '<button data-rm="' + k + '" aria-label="후보에서 빼기">✕</button></span>';
+    }).join('') + '</div>';
+  }
+
+  function renderAll() {
+    state = compute();
+    if (!state) {
+      $('#tabs').innerHTML = '';
+      $('#day').innerHTML = '<div class="empty">출산 예정일을 입력하면 앞뒤 3일의 추천 이름이 나와요.</div>';
+      $('#avg').innerHTML = '';
+      renderSaved();
+      return;
+    }
+    renderTabs();
+    renderDay();
+    renderAvg();
+    renderSaved();
+  }
+
+  function toggle(k) {
+    const i = saved.indexOf(k);
+    if (i >= 0) saved.splice(i, 1); else saved.push(k);
+    persist();
+    renderDay(); renderAvg(); renderSaved();
+  }
+
+  document.addEventListener('click', e => {
+    const tab = e.target.closest('.tab');
+    if (tab) { sel = +tab.dataset.i; renderTabs(); renderDay(); return; }
+    const star = e.target.closest('.star, .alt');
+    if (star) { toggle(star.dataset.k); return; }
+    const rm = e.target.closest('[data-rm]');
+    if (rm) toggle(rm.dataset.rm);
+  });
+  function updateVals() {
+    const w = +$('#ws').value, u = +$('#uq').value;
+    $('#wsv').textContent = '소리 ' + (100 - w) + ' : 사주 ' + w;
+    $('#uqv').textContent = '독특함 ' + u;
+  }
+  let timer = null;
+  function schedule() { updateVals(); clearTimeout(timer); timer = setTimeout(renderAll, 60); }
+  ['#due', '#avoid', '#mood', '#ws', '#uq', '#liai', '#conf', '#open'].forEach(s => {
+    $(s).addEventListener('input', schedule);
+  });
+  const hn = $('#hjn');
+  if (hn) hn.textContent = SYL.length + '음절 ' + SYL.reduce((n, x) => n + x.opts.length, 0) + '자';
+  updateVals();
+  renderAll();
+})();
+</script>
+
+</body></html>
