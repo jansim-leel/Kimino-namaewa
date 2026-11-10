@@ -1,5 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>손씨네 작명첩</title>
+<title>너의이름은</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -157,6 +157,10 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
 .badge { font-size: 0.78rem; border: 1px solid var(--line); border-radius: 10px; padding: 0 8px; color: var(--muted); }
 .badge.mood { color: var(--accent); border-color: var(--accent); }
 .badge.unv { color: var(--fire); border-color: var(--fire); }
+.judge { display: flex; flex-wrap: wrap; gap: 4px 6px; font-size: 0.8rem; }
+.jd { border: 1px solid var(--line); border-radius: 4px; padding: 1px 7px; white-space: nowrap; }
+.jd.ok { color: var(--accent); border-color: var(--accent); }
+.jd.no { color: var(--fire); border-color: var(--fire); }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
   display: inline-flex; align-items: center; gap: 5px; font-size: 0.84rem; color: var(--ink);
@@ -216,7 +220,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
   <header class="head">
     <div class="seal" aria-hidden="true">孫</div>
     <div>
-      <h1>손씨네 작명첩</h1>
+      <h1>너의이름은</h1>
       <p>출생 시각을 몰라도 괜찮아요. 예정일 앞뒤 3일을 12시진으로 계산하고, 소리가 자연스러운 이름에 사주에 맞는 한자를 붙여 날짜별로 10개씩 뽑아요.</p>
     </div>
   </header>
@@ -257,6 +261,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
       </div>
     </div>
     <div class="checks">
+      <label><input id="strict" type="checkbox" checked> 사격·수리오행·발음오행이 모두 좋은 이름만 (권장)</label>
       <label><input id="liai" type="checkbox" checked> 손 뒤 연음 피하기 (손우 → "소누")</label>
       <label><input id="conf" type="checkbox"> 혼동 음절 포함 (재/제, 배/베)</label>
       <label><input id="open" type="checkbox"> 목록 밖 조합도 포함 (독특하지만 어색할 수 있어요)</label>
@@ -275,6 +280,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
 
   <section class="sec">
     <h2>날짜별 추천 이름</h2>
+    <p class="sub">점수는 후보들 사이의 상대 점수예요. 100점이어도 각 이름의 ✓/✗ 항목을 같이 확인하세요.</p>
     <div class="tabs" id="tabs" role="tablist" aria-label="출생 날짜"></div>
     <div id="day" class="sec"></div>
   </section>
@@ -291,10 +297,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
   </section>
 
   <footer class="notes">
-    <p><b>점수 구성.</b> 소리 쪽은 발음 편의, 이름으로서 자연스러운 정도, 흔함, 분위기이고, 사주 쪽은 오행 보완·수리 4격·오행 흐름·음양이에요. 두 점수는 퍼지는 폭이 달라서 같은 눈금(평균 50)으로 맞춘 뒤 위 슬라이더 비율로 섞어요. 분위기는 소리 쪽 가점이라 사주 비중이 높을수록 영향이 줄어요. 이름을 먼저 정하고, 그 소리에 쓸 수 있는 한자 중 그 날 사주에 가장 맞는 조합을 골라요.</p>
+    <p><b>점수 구성.</b> 소리 쪽은 발음 편의, 발음오행, 이름으로서 자연스러운 정도, 흔함, 분위기이고, 사주 쪽은 오행 보완·수리 4격·수리오행·오행 흐름·음양이에요. 사격에 나쁜 격이 있거나 수리오행·발음오행이 상극이면 크게 깎여요. 두 점수는 퍼지는 폭이 달라서 같은 눈금(평균 50)으로 맞춘 뒤 위 슬라이더 비율로 섞어요. 분위기는 소리 쪽 가점이라 사주 비중이 높을수록 영향이 줄어요. 이름을 먼저 정하고, 그 소리에 쓸 수 있는 한자 중 그 날 사주에 가장 맞는 조합을 골라요.</p>
     <p><b>후보 이름.</b> 자연스럽게 읽히는 이름을 미리 정리해 둔 목록 안에서만 골라요. 빠진 이름이 있을 수 있어서, 체크하면 목록 밖 조합도 보여줘요.</p>
     <p><b>제외하는 이름.</b> 손 바로 뒤에서 연음이 생기는 이름(손우진 → 소누진), 손주·손가 같은 단어가 되는 이름(인기 이름 주원만 예외), ㄴ+ㄹ이 겹쳐 소리가 바뀌는 이름은 빼요. ㅐ/ㅔ처럼 혼동되는 모음은 기본으로 뺐고, 체크하면 넣어요.</p>
     <p><b>흔함 표시에 대해.</b> 2025년 출생신고 상위 5위(도윤, 이준, 시우, 하준, 태오)만 통계로 확인했어요. 나머지 인기 이름 분류는 추정이라 참고용이에요.</p>
+    <p><b>항목별 ✓/✗.</b> 이름마다 사격(원·형·이·정이 모두 길수인지), 수리오행(원·형·이 격의 끝수를 목화토금수로 바꿔 상극이 없는지), 발음오행(손+이름 초성의 상극 여부), 음양(한쪽으로 쏠리지 않았는지), 사주오행(그 시진 8자와 성, 이름 한자를 합쳐 비는 오행이 없는지)을 따로 보여줘요. 상극만 걸러내고 상생·비화는 구분하지 않았고, 학파마다 기준이 달라요. 점수는 후보들 사이의 상대 점수예요.</p>
     <p><b>"검증 전" 한자.</b> 이름 찾기에서만 쓰는 글자의 한자는 획수·오행을 제가 정리한 값이라 틀린 곳이 있을 수 있어요. 수리 점수는 획수에 바로 영향을 받으니, 고르기 전에 인명용 한자인지와 획수를 꼭 확인하세요. 추천 목록에 쓰는 한자도 전수 검증은 하지 못했어요.</p>
     <p><b>알아둘 점.</b> 월주는 절기 시각으로 정하고, 23~01시는 子時로 묶어 같은 날로 봤어요. 孫은 10획, 오행은 水로 보고 오행 개수에도 함께 셌어요. 한자의 오행은 출처마다 다를 수 있고, 작명 기준도 학파마다 달라서 사주 점수는 참고용이에요. 추천 목록에 쓰는 한자 후보는 <span id="hjn"></span>이고, 이름 찾기에서만 쓰는 글자는 따로 있어요. 신고 전에 대법원 전자가족관계등록시스템에서 인명용 한자인지 확인하세요.</p>
   </footer>
@@ -472,6 +479,114 @@ const SYL = SYL_DATA.map(([r, rom, tags, opts]) => ({
   opts: opts.map(([h, m, s, e]) => ({ h, m, s, e, r, v: true }))
 })));
 
+// 추가 한자 후보. [한자, 뜻, 원획, 오행(0木 1火 2土 3金 4水)]. 모두 직접 정리한 값이라 "검증 전"으로 표시돼요.
+const EXTRA_HANJA = {
+  '서': [['敍','차례',11,3],['徐','천천히',10,0],['瑞','상서',14,3],['舒','펼',12,3],['緖','실마리',15,0]],
+  '준': [['俊','준걸',9,0],['準','법도',14,4],['晙','밝을',11,1],['遵','좇을',19,2]],
+  '도': [['道','길',16,2],['度','법도',9,2],['渡','건널',13,4],['陶','질그릇',16,2],['都','도읍',16,2]],
+  '시': [['始','비로소',8,2],['施','베풀',9,0],['是','옳을',9,1],['市','저자',5,0]],
+  '하': [['荷','연꽃',13,0]],
+  '지': [['知','알',8,1],['芝','지초',10,0],['地','땅',6,2],['祉','복',9,0],['旨','맛있을',6,1],['枝','가지',8,0]],
+  '호': [['好','좋을',6,2],['虎','범',8,0],['皓','흴',12,3],['豪','호걸',14,2],['澔','넓을',16,4],['護','도울',21,3]],
+  '민': [['敏','민첩할',11,0],['珉','옥돌',10,3],['旼','화할',8,1],['玟','옥돌',9,3],['閔','근심할',12,0]],
+  '현': [['玄','검을',5,4],['絃','줄',11,0],['峴','고개',10,2],['玹','옥빛',10,3],['晛','햇살',11,1],['顯','나타날',23,1]],
+  '진': [['眞','참',10,0],['珍','보배',11,3],['辰','별',7,2],['振','떨칠',11,0],['進','나아갈',15,2]],
+  '성': [['成','이룰',6,2],['誠','정성',13,3],['聖','성인',13,3],['盛','성할',11,2],['珹','옥',11,3]],
+  '승': [['承','이을',8,0],['勝','이길',12,2],['丞','도울',6,0],['乘','탈',10,3]],
+  '빈': [['斌','빛날',12,0],['份','빛날',6,0],['賓','손',14,3],['濱','물가',18,4]],
+  '단': [['丹','붉을',4,1],['端','끝',14,3]],
+  '기': [['起','일어날',10,1],['奇','기이할',8,2],['琪','옥',13,3],['紀','벼리',9,0],['旗','기',14,0],['祈','빌',9,0]],
+  '규': [['奎','별',9,0],['珪','홀',11,3],['葵','해바라기',15,0],['揆','헤아릴',13,0]],
+  '강': [['江','강',7,4],['岡','언덕',8,2],['綱','벼리',14,0],['鋼','강철',16,3]],
+  '우': [['祐','도울',10,0],['佑','도울',7,0],['優','넉넉할',17,1],['禹','임금',9,2],['瑀','옥돌',14,3],['友','벗',4,0]],
+  '윤': [['允','진실로',4,2],['胤','이을',9,1],['尹','다스릴',4,0],['鈗','창',12,3],['玧','귀막이 옥',9,3]],
+  '은': [['殷','성할',10,2],['誾','향기로울',15,3]],
+  '안': [['晏','늦을',10,1],['案','책상',10,0],['顔','얼굴',18,1],['雁','기러기',12,1]],
+  '율': [['律','법',9,0],['聿','붓',6,1]],
+  '원': [['元','으뜸',4,0],['圓','둥글',13,4],['苑','동산',11,0],['沅','물 이름',8,4],['媛','계집',12,2],['院','집',15,2]],
+  '오': [['吾','나',7,4],['午','낮',4,1],['旿','낮',8,1],['五','다섯',4,2]],
+  '유': [['裕','넉넉할',12,0],['侑','권할',8,0],['儒','선비',16,0],['瑜','아름다운 옥',14,3],['有','있을',6,4],['宥','너그러울',9,0],['唯','오직',11,4]],
+  '이': [['伊','저',6,0],['李','오얏',7,0],['以','써',5,2],['珥','귀고리',11,3],['易','쉬울',8,1]],
+  '주': [['周','두루',8,2],['珠','구슬',11,3],['注','부을',9,4],['洲','물가',10,4],['主','주인',5,0],['株','그루',10,0]],
+  '재': [['材','재목',7,0],['宰','재상',10,0],['梓','가래나무',11,0],['財','재물',10,3]],
+  '태': [['太','클',4,0],['兌','바꿀',7,3],['台','별',5,4]],
+  '세': [['世','대',5,0],['勢','형세',13,2],['歲','해',13,2]],
+  '후': [['後','뒤',9,0],['昫','해 돋을',9,1]],
+  '선': [['先','먼저',6,3],['仙','신선',5,0],['鮮','고울',17,4],['璿','구슬',19,3],['旋','돌',11,0]],
+  '예': [['藝','재주',21,0],['叡','밝을',16,2],['譽','기릴',21,3],['禮','예도',18,0]],
+  '람': [['覽','볼',21,1]],
+  '훈': [['熏','불길',14,1],['塤','질나팔',13,2]],
+  '건': [['乾','하늘',11,0],['鍵','열쇠',17,3]],
+  '겸': [['兼','겸할',10,3]],
+  '찬': [['璨','옥빛',18,3],['粲','정미',13,0]],
+  '휘': [['揮','휘두를',13,0],['徽','아름다울',17,0],['煇','빛',13,1]],
+  '정': [['淨','깨끗할',12,4],['晶','밝을',12,1],['楨','단단한 나무',13,0],['庭','뜰',10,2],['靜','고요할',16,0]],
+  '수': [['守','지킬',6,0],['殊','다를',10,4],['壽','목숨',14,0]],
+  '연': [['延','늘일',7,2],['演','펼',15,4],['姸','곱다',9,2],['緣','인연',15,0],['硏','갈',11,3]],
+  '소': [['韶','아름다울',14,3],['紹','이을',11,0],['笑','웃을',10,0]],
+  '아': [['峨','높을',10,2],['亞','버금',8,1]],
+  '나': [['奈','어찌',8,0]],
+  '채': [['蔡','성',17,0],['埰','영지',11,2]],
+  '가': [['珂','옥',10,3],['歌','노래',14,3]],
+  '영': [['瑛','옥빛',16,3],['榮','영화',14,0],['煐','빛날',15,1],['瑩','밝을',15,3],['穎','이삭',16,0],['泳','헤엄칠',9,4]],
+  '석': [['石','돌',5,3],['晳','밝을',12,1],['席','자리',10,0],['奭','클',15,1]],
+  '동': [['童','아이',12,3],['桐','오동나무',10,0],['烔','뜨거울',10,1],['同','한가지',6,4]],
+  '상': [['常','항상',11,0],['象','코끼리',12,1],['商','장사',11,3],['翔','날',12,1],['湘','상수',13,4],['想','생각',13,1]],
+  '명': [['名','이름',6,4],['溟','바다',14,4],['茗','차싹',12,0]],
+  '범': [['帆','돛',6,0],['汎','뜰',7,4]],
+  '경': [['京','서울',8,2],['耕','밭갈',10,0],['璟','옥빛',17,3],['炅','빛날',8,1],['暻','햇빛',12,1],['鏡','거울',19,3],['卿','벼슬',12,2],['經','지날',14,0]],
+  '관': [['琯','옥피리',13,3],['冠','갓',9,0],['貫','꿸',11,3],['管','대롱',14,0],['觀','볼',25,1]],
+  '남': [['男','사내',7,2]],
+  '대': [['代','대신할',5,0],['垈','집터',8,2],['對','대답할',14,2]],
+  '래': [['萊','명아주',14,0]],
+  '령': [['伶','영리할',7,0],['怜','영리할',9,1],['鈴','방울',13,3],['嶺','고개',17,2],['領','거느릴',14,1]],
+  '리': [['璃','유리',15,3],['莉','말리',13,0],['俐','영리할',9,0]],
+  '무': [['戊','천간',5,2],['務','힘쓸',11,2],['舞','춤출',14,1]],
+  '미': [['彌','두루',17,3],['渼','물결무늬',13,4],['薇','장미',19,0],['味','맛',8,4],['米','쌀',6,0]],
+  '백': [['百','일백',6,4],['柏','잣나무',9,0],['伯','맏',7,0]],
+  '사': [['士','선비',3,0],['泗','물 이름',9,4],['師','스승',10,0],['謝','사례할',17,3]],
+  '산': [['算','셈',14,0]],
+  '설': [['說','말씀',14,3]],
+  '송': [['宋','송나라',7,0],['誦','외울',14,3],['送','보낼',13,2]],
+  '신': [['晨','새벽',11,1],['伸','펼',7,0],['臣','신하',6,1],['辛','매울',7,3],['紳','큰 띠',11,0],['神','귀신',10,0]],
+  '양': [['良','어질',7,2],['亮','밝을',9,1],['暘','해돋이',13,1],['襄','도울',17,2],['揚','날릴',13,0]],
+  '언': [['焉','어찌',11,1],['諺','속담',16,3]],
+  '여': [['余','나',7,2],['呂','성',7,4],['與','줄',14,1]],
+  '열': [['熱','더울',15,1],['閱','볼',15,0]],
+  '용': [['溶','녹을',14,4],['湧','솟을',13,4],['蓉','연꽃',16,0],['榕','나무 이름',14,0],['用','쓸',5,4]],
+  '욱': [['昱','빛날',9,1],['彧','문채',11,1],['頊','삼갈',13,3]],
+  '위': [['緯','씨',15,0],['渭','물 이름',13,4],['瑋','옥 이름',14,3],['位','자리',7,0],['威','위엄',9,3],['煒','빛날',13,1],['衛','지킬',16,3]],
+  '의': [['毅','굳셀',15,3],['懿','아름다울',22,1],['儀','거동',15,0],['誼','옳을',15,3],['依','의지할',8,0]],
+  '인': [['人','사람',2,0],['印','도장',6,0],['認','알',14,3],['引','끌',4,0]],
+  '일': [['逸','편안할',15,2],['溢','넘칠',14,4],['鎰','중량 이름',18,3]],
+  '제': [['帝','임금',9,0],['堤','둑',12,2],['悌','공경할',11,1],['齊','가지런할',14,2],['提','끌',13,0],['祭','제사',11,0]],
+  '조': [['祚','복',10,0],['趙','나라',14,1],['助','도울',7,2],['造','지을',14,2],['兆','억조',6,0]],
+  '종': [['鍾','쇠북',17,3],['琮','옥홀',13,3],['倧','상고 신인',10,0],['鐘','쇠북',20,3]],
+  '중': [['仲','버금',6,1],['中','가운데',4,2]],
+  '창': [['彰','드러날',14,1],['滄','큰 바다',14,4],['暢','화창할',14,1],['創','비롯할',12,3],['昶','해 길',9,1]],
+  '철': [['喆','밝을',12,2],['徹','통할',15,0]],
+  '청': [['菁','우거질',14,0],['晴','갤',12,1],['請','청할',15,3]],
+  '초': [['超','넘을',12,1],['草','풀',12,0],['礎','주춧돌',18,3],['秒','분초',9,0]],
+  '택': [['擇','가릴',17,0],['宅','집',6,0]],
+  '학': [['鶴','학',21,1]],
+  '한': [['寒','찰',12,4],['閑','한가할',12,0],['瀚','넓을',20,4],['汗','땀',7,4]],
+  '향': [['享','누릴',8,1],['響','소리',22,1],['鄕','시골',17,2]],
+  '혁': [['爀','불빛',18,1],['奕','클',9,1]],
+  '형': [['衡','저울대',16,0],['兄','맏',5,0],['型','모형',9,2]],
+  '혜': [['蕙','풀 이름',18,0],['彗','살별',11,1]],
+  '홍': [['鴻','기러기',17,4],['紅','붉을',9,0],['泓','깊을',9,4],['虹','무지개',9,4]],
+  '화': [['禾','벼',5,0],['話','말씀',13,3],['畵','그림',12,1],['樺','자작나무',18,0]],
+  '환': [['環','고리',18,3],['歡','기쁠',22,1],['奐','빛날',9,1],['渙','흩어질',13,4],['晥','환할',11,1]],
+  '효': [['效','본받을',10,0]],
+  '희': [['禧','복',17,0],['熹','빛날',16,1],['嬉','아름다울',15,2],['晞','마를',11,1],['僖','즐거울',14,0],['姬','계집',9,2]],
+  '광': [['洸','물 솟을',10,4],['珖','옥피리',11,3],['匡','바를',6,0],['侊','클',8,0]],
+  '근': [['勤','부지런할',13,2],['槿','무궁화',15,0],['近','가까울',11,2]],
+  '문': [['汶','물 이름',8,4],['紋','무늬',10,0],['門','문',8,0],['炆','연기 날',8,1],['雯','구름무늬',12,4]],
+  '봉': [['鳳','봉황',14,1],['奉','받들',8,0],['峰','봉우리',10,2],['逢','만날',14,2],['烽','봉화',11,1]],
+  '덕': [['悳','큰',12,1]],
+  '담': [['淡','맑을',12,4],['談','말씀',15,3],['曇','흐릴',16,1]]
+};
+
 function commonness(name) {
   if (T1.has(name)) return 1;
   if (T2.has(name)) return 0.8;
@@ -493,6 +608,12 @@ function rel(x, y) {
   return 0;
 }
 
+// 수리오행: 격 수의 끝자리 1·2 木, 3·4 火, 5·6 土, 7·8 金, 9·0 水. 발음오행: 초성 ㄱㅋ 木, ㄴㄷㄹㅌ 火, ㅇㅎ 土, ㅅㅈㅊ 金, ㅁㅂㅍ 水.
+// 상극은 오행이 두 칸 떨어진 관계(木土, 火金, 土水, 金木, 水火)예요. 상생·비화는 구분하지 않고 상극만 걸러요.
+const numEl = n => [4,0,0,1,1,2,2,3,3,4][n % 10];
+const choEl = c => 'ㄱㅋㄲ'.includes(c) ? 0 : 'ㄴㄷㄹㅌㄸ'.includes(c) ? 1 : 'ㅇㅎ'.includes(c) ? 2 : 'ㅅㅈㅊㅆㅉ'.includes(c) ? 3 : 4;
+const ke = (x, y) => { const d = ((y - x) % 5 + 5) % 5; return d === 2 || d === 3; };
+const YANG = new Set(['ㅏ','ㅑ','ㅗ','ㅛ','ㅘ']);
 // force가 true면(이름 찾기) 제외하지 않고 감점과 경고로만 알려줘요.
 function evalSound(a, b, o, force) {
   const name = a.r + b.r;
@@ -525,7 +646,15 @@ function evalSound(a, b, o, force) {
     if (X.jong === 'ㅇ' || X.jong === 'ㅁ') ease -= 3;
     if (['ㅘ','ㅝ','ㅢ','ㅟ'].indexOf(X.jung) >= 0) ease -= 6;
   }
-  return { ease: Math.max(0, ease), ok, warn };
+  const po = [SURD, A, B].map(d => choEl(d.cho));
+  let pb = 0;
+  if (ke(po[0], po[1])) pb++;
+  if (ke(po[1], po[2])) pb++;
+  if (pb) { ease -= 20 * pb; warn.push('발음오행이 서로 극해요 (' + po.map(e => EL[e]).join('·') + ')'); }
+  const py = [SURD, A, B].map(d => YANG.has(d.jung) ? 1 : 0);
+  const pyb = py[0] === py[1] && py[1] === py[2];
+  if (pyb) { ease -= 6; warn.push('발음 음양이 한쪽으로 쏠려요'); }
+  return { ease: Math.max(0, ease), ok, warn, po, pb, pyb };
 }
 
 // 분위기 가점: 두 글자 모두 해당 분위기면 크게, 한 글자만이면 작게 (정규화한 소리 점수에 더해요)
@@ -535,14 +664,28 @@ function moodBonus(a, b, mood) {
   return n === 2 ? 24 : n === 1 ? 10 : 0;
 }
 
+(function () {
+  SYL.forEach(sy => {
+    (EXTRA_HANJA[sy.r] || []).forEach(([h, m, st, e]) => {
+      if (!sy.opts.some(o => o.h === h)) sy.opts.push({ h, m, s: st, e, r: sy.r, v: true });
+    });
+  });
+})();
+
 function makeCombos(a, b, name) {
   const combos = [];
   for (const ha of a.opts) for (const hb of b.opts) {
     const n = [ha.s + hb.s, SUR.s + ha.s, SUR.s + hb.s, SUR.s + ha.s + hb.s];
-    const suri = n.filter(x => GOOD.has(x)).length * 8.75;
-    const yy = (ha.s % 2 === 0 && hb.s % 2 === 0) ? 0 : 5;
+    const bad = n.filter(x => !GOOD.has(x)).length;
+    const so = [n[0], n[1], n[2]].map(numEl);
+    const ohBad = (ke(so[0], so[1]) ? 1 : 0) + (ke(so[1], so[2]) ? 1 : 0);
+    const suri = (4 - bad) * 8.75;
+    const syy = ha.s % 2 === 0 && hb.s % 2 === 0;
+    const yy = syy ? 0 : 5;
     const flow = 0.4 * rel(SUR.e, ha.e) + 0.6 * rel(ha.e, hb.e);
-    combos.push({ ha, hb, n, st: suri + yy + flow, k: name + ':' + ha.h + hb.h });
+    // 사격이 나쁜 격 하나당, 수리오행이 상극 하나당 크게 깎아서 오행 보완 점수로 덮이지 않게 해요.
+    combos.push({ ha, hb, n, so, bad, ohBad, syy, pass: bad === 0 && ohBad === 0,
+      st: suri + yy + flow - 18 * bad - 14 * ohBad, k: name + ':' + ha.h + hb.h });
   }
   return combos;
 }
@@ -560,13 +703,14 @@ function lookupName(raw) {
   }
   const name = a.r + b.r;
   const sd = evalSound(a, b, { avoidLiaison: false, allowConf: true }, true);
+  const lkCombos = makeCombos(a, b, name);
   const tagSet = [];
   for (const ch of a.tags + b.tags) if (tagSet.indexOf(ch) < 0) tagSet.push(ch);
   return { nm: {
     a, b, name, c: commonness(name), ease: sd.ease, ok: sd.ok, warn: sd.warn,
-    soundRaw: 0, bonus: 0, soundPct: null,
+    soundRaw: 0, bonus: 0, soundPct: null, po: sd.po, pronBad: sd.pb, pyyBad: sd.pyb,
     rom: 'Son ' + a.rom[0].toUpperCase() + a.rom.slice(1) + '-' + b.rom,
-    tags: tagSet.slice(0, 2), combos: makeCombos(a, b, name)
+    tags: tagSet.slice(0, 2), combos: lkCombos, passCount: lkCombos.filter(c => c.pass).length
   } };
 }
 
@@ -585,13 +729,17 @@ function buildNames(o) {
     if (avS.has(a.r) || avS.has(b.r) || avN.has(a.r + b.r)) continue;
     const s = evalSound(a, b, o);
     if (!s) continue;
+    if (o.strict && s.pb) continue;
     const name = a.r + b.r;
     const natural = NAT.has(name);
     if (!natural && !o.open) continue;
     const c = commonness(name);
     const fit = 10 * Math.max(0, 1 - Math.abs(c - target) / 0.7);
     const snd = s.ease * 0.2 + (natural ? 15 : 3) + fit;
-    const combos = makeCombos(a, b, name);
+    const allCombos = makeCombos(a, b, name);
+    const pass = allCombos.filter(c => c.pass);
+    const combos = o.strict ? pass : allCombos;
+    if (!combos.length) continue;
     const tagSet = [];
     for (const ch of a.tags + b.tags) if (tagSet.indexOf(ch) < 0) tagSet.push(ch);
     // 분위기를 골랐으면 그 태그가 실제로 있는 이름에만 뱃지가 붙도록, 해당 태그를 앞으로 정렬
@@ -599,6 +747,7 @@ function buildNames(o) {
     out.push({
       a, b, name, c, ease: s.ease, ok: s.ok, warn: s.warn.concat(natural ? [] : ['흔한 이름 목록에 없는 조합이에요']),
       soundRaw: snd, bonus: moodBonus(a, b, o.mood), soundPct: 0,
+      po: s.po, pronBad: s.pb, pyyBad: s.pyb, passCount: pass.length,
       rom: 'Son ' + a.rom[0].toUpperCase() + a.rom.slice(1) + '-' + b.rom,
       tags: tagSet.slice(0, 2), combos
     });
@@ -720,14 +869,35 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
     const warn = nm.warn.map(w => '<span class="w">' + w + '</span>');
     return '발음 · ' + parts.concat(warn).join(' · ');
   }
-  function rowHTML(nm, combo, score, saju, extra, alts, rank) {
+  function judgeHTML(nm, combo, slotC) {
+    const J = (ok, t) => '<span class="jd ' + (ok ? 'ok' : 'no') + '">' + t + ' ' + (ok ? '✓' : '✗') + '</span>';
+    const L = ['원', '형', '이', '정'];
+    const badG = combo.n.map((x, i) => GOOD.has(x) ? '' : L[i] + x).filter(Boolean);
+    const out = [
+      J(combo.bad === 0, '사격' + (badG.length ? ' ' + badG.join('·') : '')),
+      J(combo.ohBad === 0, '수리오행 ' + combo.so.map(e => EL[e]).join('')),
+      J(nm.pronBad === 0, '발음오행 ' + nm.po.map(e => EL[e]).join('')),
+      J(!nm.pyyBad && !combo.syy, '음양')
+    ];
+    if (slotC) {
+      const c = slotC.slice(); c[SUR.e]++; c[combo.ha.e]++; c[combo.hb.e]++;
+      const lack = c.map((v, i) => v === 0 ? EL[i] : '').filter(Boolean);
+      out.push(J(lack.length === 0, '사주오행' + (lack.length ? ' ' + lack.join('·') + ' 부족' : '')));
+    }
+    return '<div class="judge">' + out.join('') + '</div>';
+  }
+  function rowHTML(nm, combo, score, saju, extra, alts, rank, slotC) {
     const k = combo.k;
     const on = saved.indexOf(k) >= 0;
+    const fail = combo.bad > 0 || combo.ohBad > 0;
+    const sug = !fail ? '' : (nm.passCount > 0
+      ? '<div class="meta">사격·수리오행을 통과하는 한자: ' + nm.combos.filter(c => c.pass).slice(0, 3).map(c => '孫' + c.ha.h + c.hb.h).join(', ') + '</div>'
+      : '<div class="meta">이 이름은 한자를 바꿔도 사격·수리오행을 모두 통과하는 조합이 없어요.</div>');
     const moodBadges = nm.tags.map(t => '<span class="badge mood">' + MOOD[t] + '</span>').join('');
     const altHTML = alts.length
       ? '<div class="alts">같은 이름 다른 한자 · 누르면 후보에 담겨요' + alts.map(a => {
           const c2 = nm.combos[a.ci];
-          return '<button class="alt" data-k="' + c2.k + '" aria-pressed="' + (saved.indexOf(c2.k) >= 0) + '" aria-label="' + nm.name + ' ' + c2.ha.h + c2.hb.h + ' 후보에 담기, 점수 ' + Math.min(100, Math.round(a.score)) + '" title="후보에 담기">' + (saved.indexOf(c2.k) >= 0 ? '★ ' : '') + '<span class="hj">' + c2.ha.h + c2.hb.h + '</span> ' + Math.min(100, Math.round(a.score)) + '</button>';
+          return '<button class="alt" data-k="' + c2.k + '" aria-pressed="' + (saved.indexOf(c2.k) >= 0) + '" aria-label="' + nm.name + ' ' + c2.ha.h + c2.hb.h + ' 후보에 담기, 점수 ' + Math.min(100, Math.round(a.score)) + '" title="후보에 담기">' + (saved.indexOf(c2.k) >= 0 ? '★ ' : '') + '<span class="hj">' + c2.ha.h + c2.hb.h + '</span> ' + Math.min(100, Math.round(a.score)) + (c2.pass ? '' : ' ✗') + '</button>';
         }).join('') + '</div>'
       : '';
     return '<li class="row"><div class="rk">' + rank + '</div><div class="bd">' +
@@ -735,8 +905,8 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
       '<div class="hjline"><span class="hj2">孫' + combo.ha.h + combo.hb.h + '</span><span class="badge">' + cBadge(nm.c) + '</span>' + moodBadges + ((combo.ha.v || combo.hb.v) ? '<span class="badge unv" title="획수·오행을 검증하지 못한 한자예요">검증 전</span>' : '') + '</div>' +
       '<div class="chips">' + chip(combo.ha) + chip(combo.hb) + '</div>' +
       '<div class="snd">' + sndHTML(nm) + '</div>' +
-      '<div class="suri">' + suriHTML(combo.n) + '</div>' +
-      '<div class="meta">' + extra + '</div>' + altHTML + '</div>' +
+      '<div class="suri">' + suriHTML(combo.n) + '</div>' + judgeHTML(nm, combo, slotC) +
+      '<div class="meta">' + extra + '</div>' + sug + altHTML + '</div>' +
       '<div class="sc"><div class="num">' + Math.min(100, Math.round(score)) + '</div><div class="bar"><i style="width:' + Math.min(100, Math.round(score)) + '%"></i></div>' +
       '<div class="parts">' + (nm.soundPct == null ? '' : '소리 ' + Math.min(100, Math.round(nm.soundPct)) + '<br>') + '사주 ' + Math.round(saju) + '</div>' +
       '<button class="star" data-k="' + k + '" aria-pressed="' + on + '" aria-label="후보에 담기">' + (on ? '★' : '☆') + '</button></div></li>';
@@ -747,6 +917,7 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
       avoid: $('#avoid').value.split(/[,\s、]+/).filter(Boolean),
       mood: $('#mood').value,
       uq: +$('#uq').value,
+      strict: $('#strict').checked,
       avoidLiaison: $('#liai').checked,
       allowConf: $('#conf').checked,
       open: $('#open').checked
@@ -816,7 +987,7 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
   }
 
   function emptyMsg() {
-    return '조건에 맞는 이름이 없어요. 피하고 싶은 글자를 줄이거나, 연음·혼동 음절·목록 밖 조합 옵션을 켜 보세요.';
+    return '조건에 맞는 이름이 없어요. "사격·수리오행·발음오행이 모두 좋은 이름만" 체크를 풀거나, 피하고 싶은 글자를 줄이거나, 연음·혼동 음절·목록 밖 조합 옵션을 켜 보세요.';
   }
 
   function renderDay() {
@@ -845,7 +1016,7 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
       '<div class="panel sec"><div class="sub">시간을 평균한 오행 분포 (여덟 글자 중 개수)</div><div class="dist">' + dist + '</div><p class="need">' + need + '</p></div>' +
       '<ol class="list">' + day.top.map((it, n) => {
         const combo = it.nm.combos[it.best.ci];
-        return rowHTML(it.nm, combo, it.score, it.best.saju, '이 한자는 <b>' + SLOT[it.best.bi] + '</b>에 특히 잘 맞아요', it.alts, n + 1);
+        return rowHTML(it.nm, combo, it.score, it.best.saju, '이 한자는 <b>' + SLOT[it.best.bi] + '</b>에 특히 잘 맞아요', it.alts, n + 1, day.slots[it.best.bi].c);
       }).join('') + '</ol>';
   }
 
@@ -872,12 +1043,12 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
     const items = nm.combos.map((c, ci) => {
       let sum = 0;
       per.forEach(p => { sum += p[ci].saju; });
-      return { ci, avg: norm(sum / per.length), cur: norm(per[sel][ci].saju), bi: per[sel][ci].bi };
-    }).sort((x, y) => y.avg - x.avg || x.ci - y.ci);
+      return { ci, pass: c.pass, avg: norm(sum / per.length), cur: norm(per[sel][ci].saju), bi: per[sel][ci].bi };
+    }).sort((x, y) => (y.pass - x.pass) || y.avg - x.avg || x.ci - y.ci);
     const top = items.slice(0, 8);
-    box.innerHTML = '<p class="sub">손' + nm.name + ' · 쓸 수 있는 한자 조합 ' + items.length + '가지 중 사주 점수가 높은 ' + top.length + '개예요. (7일 평균 기준)</p>' +
+    box.innerHTML = '<p class="sub">손' + nm.name + ' · 쓸 수 있는 한자 조합 ' + items.length + '가지 중 사격·수리오행을 모두 통과하는 조합은 ' + nm.passCount + '개예요. 점수가 높은 ' + top.length + '개를 보여줘요. (7일 평균 기준)</p>' +
       '<ol class="list">' + top.map((it, n) => rowHTML(nm, nm.combos[it.ci], it.avg, it.avg,
-        '7일 평균 ' + Math.round(it.avg) + '점 · ' + day.mo + '/' + day.d + ' 기준 ' + Math.round(it.cur) + '점, <b>' + SLOT[it.bi] + '</b>에 특히 잘 맞아요', [], n + 1)).join('') + '</ol>';
+        '7일 평균 ' + Math.round(it.avg) + '점 · ' + day.mo + '/' + day.d + ' 기준 ' + Math.round(it.cur) + '점, <b>' + SLOT[it.bi] + '</b>에 특히 잘 맞아요', [], n + 1, day.slots[it.bi].c)).join('') + '</ol>';
   }
 
   function renderSaved() {
@@ -932,7 +1103,7 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
   }
   let timer = null;
   function schedule() { updateVals(); clearTimeout(timer); timer = setTimeout(renderAll, 60); }
-  ['#due', '#avoid', '#mood', '#ws', '#uq', '#liai', '#conf', '#open', '#myname'].forEach(s => {
+  ['#due', '#avoid', '#mood', '#ws', '#uq', '#liai', '#conf', '#open', '#myname', '#strict'].forEach(s => {
     $(s).addEventListener('input', schedule);
   });
   const hn = $('#hjn');
