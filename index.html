@@ -252,19 +252,20 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
       <div class="field sl">
         <div class="labrow"><span class="lab">무엇을 더 볼까요</span><span class="val" id="wsv"></span></div>
         <input id="ws" type="range" min="0" max="100" value="50" aria-label="소리와 사주 비중">
-        <div class="ends"><span>소리·분위기</span><span class="r">사주</span></div>
+        <div class="ends"><span>소리</span><span class="r">사주</span></div>
       </div>
       <div class="field sl">
         <div class="labrow"><span class="lab">이름 스타일</span><span class="val" id="uqv"></span></div>
-        <input id="uq" type="range" min="0" max="100" value="70" aria-label="흔함과 독특함">
-        <div class="ends"><span>익숙한 이름</span><span class="r">독특한 이름</span></div>
+        <input id="uq" type="range" min="0" max="4" step="1" value="1" aria-label="이름 스타일 5단계">
+        <div class="ends"><span>인기 위주</span><span class="r">독특</span></div>
+        <small id="openhint" hidden>드문·독특 단계는 목록 밖 조합도 자동으로 넣어요. "목록 밖" 뱃지를 확인하세요.</small>
       </div>
     </div>
     <div class="checks">
       <label><input id="strict" type="checkbox" checked> 사격·수리오행·발음오행이 모두 좋은 이름만 (권장)</label>
       <label><input id="liai" type="checkbox" checked> 손 뒤 연음 피하기 (손우 → "소누")</label>
       <label><input id="conf" type="checkbox"> 혼동 음절 포함 (재/제, 배/베)</label>
-      <label><input id="open" type="checkbox"> 목록 밖 조합도 포함 (독특하지만 어색할 수 있어요)</label>
+      <label><input id="open" type="checkbox"> 목록 밖 조합도 포함 (어색할 수 있어요. 드문·독특 스타일은 자동 포함)</label>
     </div>
   </section>
 
@@ -280,7 +281,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
 
   <section class="sec">
     <h2>날짜별 추천 이름</h2>
-    <p class="sub">점수는 후보들 사이의 상대 점수예요. 100점이어도 각 이름의 ✓/✗ 항목을 같이 확인하세요.</p>
+    <p class="sub">점수는 고정 기준이라 옵션을 바꿔도 같은 이름은 같은 점수예요(선호 설정은 점수에 직접 반영돼요). 100점이어도 각 이름의 ✓/✗ 항목을 같이 확인하세요.</p>
     <div class="tabs" id="tabs" role="tablist" aria-label="출생 날짜"></div>
     <div id="day" class="sec"></div>
   </section>
@@ -297,11 +298,11 @@ input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
   </section>
 
   <footer class="notes">
-    <p><b>점수 구성.</b> 소리 쪽은 발음 편의, 발음오행, 이름으로서 자연스러운 정도, 흔함, 분위기이고, 사주 쪽은 오행 보완·수리 4격·수리오행·오행 흐름·음양이에요. 사격에 나쁜 격이 있거나 수리오행·발음오행이 상극이면 크게 깎여요. 두 점수는 퍼지는 폭이 달라서 같은 눈금(평균 50)으로 맞춘 뒤 위 슬라이더 비율로 섞어요. 분위기는 소리 쪽 가점이라 사주 비중이 높을수록 영향이 줄어요. 이름을 먼저 정하고, 그 소리에 쓸 수 있는 한자 중 그 날 사주에 가장 맞는 조합을 골라요.</p>
-    <p><b>후보 이름.</b> 자연스럽게 읽히는 이름을 미리 정리해 둔 목록 안에서만 골라요. 빠진 이름이 있을 수 있어서, 체크하면 목록 밖 조합도 보여줘요.</p>
+    <p><b>점수 구성.</b> 최종 점수는 기본 64점 + 이름 스타일 16점 + 분위기 20점이에요. 기본은 소리와 사주를 위 슬라이더 비율로 섞은 값이고, 스타일·분위기는 슬라이더와 상관없이 따로 더해져서 사주 100%에서도 순위가 움직여요. 분위기를 고르지 않으면 모든 이름이 분위기 점수를 만점으로 받아요. 소리 쪽은 발음 편의·발음오행, 자연스러운 이름 목록 여부, 음절 흐름이고, 사주 쪽은 오행 보완·수리 4격·수리오행·오행 흐름·음양 배열이에요(획수가 적은 쪽이 아주 조금 유리해요). 사격에 나쁜 격이 있거나 수리오행·발음오행이 상극이면 크게 깎여요. 소리와 사주 점수는 후보 풀과 무관한 고정 눈금(전체 조합에서 잰 도달 가능 범위)으로 0~100에 옮기므로 체크박스를 바꿔도 같은 이름·같은 날은 같은 점수예요. 이름을 먼저 정하고, 그 소리에 쓸 수 있는 한자 중 그 날 사주에 가장 맞는 조합을 골라요.</p>
+    <p><b>후보 이름.</b> 자연스럽게 읽히는 이름을 미리 정리해 둔 목록 안에서 골라요. 빠진 이름이 있을 수 있어서, 체크하거나 이름 스타일을 드문·독특으로 두면 목록 밖 조합도 보여주고 "목록 밖" 뱃지를 붙여요.</p>
     <p><b>제외하는 이름.</b> 손 바로 뒤에서 연음이 생기는 이름(손우진 → 소누진), 손주·손가 같은 단어가 되는 이름(인기 이름 주원만 예외), ㄴ+ㄹ이 겹쳐 소리가 바뀌는 이름은 빼요. ㅐ/ㅔ처럼 혼동되는 모음은 기본으로 뺐고, 체크하면 넣어요.</p>
     <p><b>흔함 표시에 대해.</b> 2025년 출생신고 상위 5위(도윤, 이준, 시우, 하준, 태오)만 통계로 확인했어요. 나머지 인기 이름 분류는 추정이라 참고용이에요.</p>
-    <p><b>항목별 ✓/✗.</b> 이름마다 사격(원·형·이·정이 모두 길수인지), 수리오행(원·형·이 격의 끝수를 목화토금수로 바꿔 상극이 없는지), 발음오행(손+이름 초성의 상극 여부), 음양(한쪽으로 쏠리지 않았는지), 사주오행(그 시진 8자와 성, 이름 한자를 합쳐 비는 오행이 없는지)을 따로 보여줘요. 상극만 걸러내고 상생·비화는 구분하지 않았고, 학파마다 기준이 달라요. 점수는 후보들 사이의 상대 점수예요.</p>
+    <p><b>항목별 ✓/✗.</b> 이름마다 사격(원·형·이·정이 모두 길수인지), 수리오행(원·형·이 격의 끝수를 목화토금수로 바꿔 상극이 없는지), 발음오행(손+이름 초성의 상극 여부), 음양(한쪽으로 쏠리지 않았는지), 사주오행(그 시진 8자와 성, 이름 한자를 합쳐 비는 오행이 없는지)을 따로 보여줘요. 상극만 걸러내고 상생·비화는 구분하지 않았고, 학파마다 기준이 달라요.</p>
     <p><b>"검증 전" 한자.</b> 이름 찾기에서만 쓰는 글자의 한자는 획수·오행을 제가 정리한 값이라 틀린 곳이 있을 수 있어요. 수리 점수는 획수에 바로 영향을 받으니, 고르기 전에 인명용 한자인지와 획수를 꼭 확인하세요. 추천 목록에 쓰는 한자도 전수 검증은 하지 못했어요.</p>
     <p><b>알아둘 점.</b> 월주는 절기 시각으로 정하고, 23~01시는 子時로 묶어 같은 날로 봤어요. 孫은 10획, 오행은 水로 보고 오행 개수에도 함께 셌어요. 한자의 오행은 출처마다 다를 수 있고, 작명 기준도 학파마다 달라서 사주 점수는 참고용이에요. 추천 목록에 쓰는 한자 후보는 <span id="hjn"></span>이고, 이름 찾기에서만 쓰는 글자는 따로 있어요. 신고 전에 대법원 전자가족관계등록시스템에서 인명용 한자인지 확인하세요.</p>
   </footer>
@@ -654,15 +655,45 @@ function evalSound(a, b, o, force) {
   const py = [SURD, A, B].map(d => YANG.has(d.jung) ? 1 : 0);
   const pyb = py[0] === py[1] && py[1] === py[2];
   if (pyb) { ease -= 6; warn.push('발음 음양이 한쪽으로 쏠려요'); }
-  return { ease: Math.max(0, ease), ok, warn, po, pb, pyb };
+  // 음절 흐름(0~19): 받침이 없을수록, 모음이 달라질수록 부드럽게 이어져요. 같은 소리 점수끼리 구분하는 역할도 해요.
+  let flow = 0;
+  if (!A.jong) flow += 4;
+  if (!B.jong) flow += 4; else if (['ㄴ','ㅇ','ㅁ','ㄹ'].indexOf(B.jong) >= 0) flow += 2;
+  if (A.jung !== B.jung) flow += 3;
+  if (A.jung !== SURD.jung) flow += 3;
+  // 첫소리가 부드러운 소리(ㅇ ㅎ ㄴ ㅁ ㄹ)이면 이름이 부드럽게 들려서 한 글자당 1점, 모음이 입을 크게 여는 ㅏ·ㅗ·ㅓ면 0.5점이에요.
+  for (const X of [A, B]) {
+    if (['ㅇ','ㅎ','ㄴ','ㅁ','ㄹ'].indexOf(X.cho) >= 0) flow += 1;
+    if (['ㅏ','ㅗ','ㅓ'].indexOf(X.jung) >= 0) flow += 0.5;
+  }
+  return { ease: Math.max(0, ease), flow, ok, warn, po, pb, pyb };
 }
 
-// 분위기 가점: 두 글자 모두 해당 분위기면 크게, 한 글자만이면 작게 (정규화한 소리 점수에 더해요)
-function moodBonus(a, b, mood) {
-  if (!mood) return 0;
+// 선호 반영. 점수는 전부 "고정 기준"이라 후보 풀이 바뀌어도 같은 이름은 같은 점수예요.
+// 최종 점수 = 기본(소리·사주 섞은 값) 78 + 이름 스타일 12 + 분위기 10 (합계 100).
+const W_BASE = 64, W_STYLE = 16, W_MOOD = 20;
+// 소리 원점수(ease*0.6 + 목록 여부 + 음절 흐름)와 사주 원점수를 0~100으로 옮기는 고정 눈금. 전체 후보를 훑어 잰 도달 가능 범위예요.
+const SOUND_LO = 72, SOUND_HI = 94;
+const SAJU_LO = 20, SAJU_HI = 90;
+const sajuScale = x => Math.max(0, Math.min(100, 100 * (x - SAJU_LO) / (SAJU_HI - SAJU_LO)));
+const soundScale = x => Math.max(0, Math.min(100, 100 * (x - SOUND_LO) / (SOUND_HI - SOUND_LO)));
+const STYLES = [
+  { k: '인기 위주', t: 1.0 }, { k: '익숙', t: 0.8 }, { k: '보통', t: 0.6 }, { k: '드문', t: 0.4 }, { k: '독특', t: 0.2 }
+];
+// 이름 스타일 적합도 0~1. 고른 단계가 원하는 흔함 수준에 가까울수록 높아요.
+function styleFit(c, lvl) { return Math.max(0, 1 - Math.abs(c - STYLES[lvl].t) / 0.5); }
+// 분위기 적합도 0~1. 고르지 않으면 모두 만점, 골랐으면 두 글자 모두 맞아야 만점이에요.
+function moodMatch(a, b, mood) {
+  if (!mood) return 1;
   const n = (a.tags.indexOf(mood) >= 0 ? 1 : 0) + (b.tags.indexOf(mood) >= 0 ? 1 : 0);
-  return n === 2 ? 24 : n === 1 ? 10 : 0;
+  return n === 2 ? 1 : n === 1 ? 0.5 : 0;
 }
+// 한쪽 비중이 0이어도 다른 쪽으로 동점을 가르도록 아주 작은 값(최대 0.4점)을 더해요.
+function finalScore(saju, nm, ws) {
+  const base = ws * saju + (1 - ws) * nm.soundScore;
+  return Math.min(100, W_BASE * base / 100 + W_STYLE * nm.fit + W_MOOD * nm.moodM + 0.002 * (saju + nm.soundScore));
+}
+function prefPct(nm) { return (W_STYLE * nm.fit + W_MOOD * nm.moodM) / (W_STYLE + W_MOOD) * 100; }
 
 (function () {
   SYL.forEach(sy => {
@@ -681,11 +712,15 @@ function makeCombos(a, b, name) {
     const ohBad = (ke(so[0], so[1]) ? 1 : 0) + (ke(so[1], so[2]) ? 1 : 0);
     const suri = (4 - bad) * 8.75;
     const syy = ha.s % 2 === 0 && hb.s % 2 === 0;
-    const yy = syy ? 0 : 5;
+    // 음양 배열: 성·원·이 획수의 홀짝이 번갈아 나오면 5점, 한쪽으로만 쏠리면 0점, 그 사이는 3.5점
+    const par = [SUR.s % 2, ha.s % 2, hb.s % 2];
+    const yy = syy ? 0 : (par[0] !== par[1] && par[1] !== par[2]) ? 5 : 3.5;
     const flow = 0.4 * rel(SUR.e, ha.e) + 0.6 * rel(ha.e, hb.e);
+    // 획수가 적을수록 쓰기 쉬워서 아주 조금(최대 약 1.5점) 가점해요. 동점을 가르는 용도예요.
+    const easy = 1.5 - 0.04 * (ha.s + hb.s);
     // 사격이 나쁜 격 하나당, 수리오행이 상극 하나당 크게 깎아서 오행 보완 점수로 덮이지 않게 해요.
     combos.push({ ha, hb, n, so, bad, ohBad, syy, pass: bad === 0 && ohBad === 0,
-      st: suri + yy + flow - 18 * bad - 14 * ohBad, k: name + ':' + ha.h + hb.h });
+      st: suri + yy + flow + easy - 18 * bad - 14 * ohBad, k: name + ':' + ha.h + hb.h });
   }
   return combos;
 }
@@ -715,8 +750,9 @@ function lookupName(raw) {
 }
 
 function buildNames(o) {
-  const t = o.uq / 100;
-  const target = 1 - 0.65 * t;
+  const lvl = Math.max(0, Math.min(4, Math.round(o.uq)));
+  // 드문·독특 스타일은 목록 안에 후보가 거의 없어서, 목록 밖 조합을 자동으로 넣어요(뱃지로 표시).
+  const openAll = o.open || lvl >= 3;
   const out = [];
   // 피할 글자: 한 글자는 그 글자가 들어간 이름 전부, 두 글자는 그 이름만 뺀다
   const avS = new Set(), avN = new Set();
@@ -732,10 +768,10 @@ function buildNames(o) {
     if (o.strict && s.pb) continue;
     const name = a.r + b.r;
     const natural = NAT.has(name);
-    if (!natural && !o.open) continue;
+    if (!natural && !openAll) continue;
     const c = commonness(name);
-    const fit = 10 * Math.max(0, 1 - Math.abs(c - target) / 0.7);
-    const snd = s.ease * 0.2 + (natural ? 15 : 3) + fit;
+    const fit = styleFit(c, lvl);
+    const snd = s.ease * 0.6 + (natural ? 20 : 5) + s.flow;
     const allCombos = makeCombos(a, b, name);
     const pass = allCombos.filter(c => c.pass);
     const combos = o.strict ? pass : allCombos;
@@ -746,7 +782,7 @@ function buildNames(o) {
     if (o.mood) tagSet.sort((x, y) => (y === o.mood) - (x === o.mood));
     out.push({
       a, b, name, c, ease: s.ease, ok: s.ok, warn: s.warn.concat(natural ? [] : ['흔한 이름 목록에 없는 조합이에요']),
-      soundRaw: snd, bonus: moodBonus(a, b, o.mood), soundPct: 0,
+      natural, soundRaw: snd, soundScore: soundScale(snd), fit, moodM: moodMatch(a, b, o.mood), soundPct: soundScale(snd),
       po: s.po, pronBad: s.pb, pyyBad: s.pyb, passCount: pass.length,
       rom: 'Son ' + a.rom[0].toUpperCase() + a.rom.slice(1) + '-' + b.rom,
       tags: tagSet.slice(0, 2), combos
@@ -826,22 +862,14 @@ function pickTop(items, count) {
   }
   return out;
 }
-function dayTop(names, perCombo, ws, normS) {
+function dayTop(names, perCombo, ws) {
   const items = names.map((nm, i) => {
-    const arr = perCombo[i].map((r, ci) => { const sj = normS(r.saju); return { ci, saju: sj, bi: r.bi, score: mix(sj, nm.soundPct, ws) }; });
+    const arr = perCombo[i].map((r, ci) => { const sj = sajuScale(r.saju); return { ci, saju: sj, bi: r.bi, score: finalScore(sj, nm, ws) }; });
     arr.sort((x, y) => y.score - x.score);
     return { i, nm, score: arr[0].score, best: arr[0], alts: arr.slice(1, 3) };
   });
   return pickTop(items, 10);
 }
-// 소리와 사주는 점수가 퍼지는 폭이 달라서, 각각 평균 50·표준편차 16 눈금으로 맞춘 뒤 섞어요.
-function makeNorm(sum, sq, n) {
-  const mean = n ? sum / n : 0;
-  const sd = Math.max(Math.sqrt(Math.max(0, (n ? sq / n : 0) - mean * mean)), 1e-6);
-  return x => Math.max(0, Math.min(100, 50 + 16 * (x - mean) / sd));
-}
-// 한쪽 비중이 0이어도 다른 쪽으로 동점을 가르도록 아주 작은 값을 더해요.
-function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
 //==LOGIC-END
 
 (function () {
@@ -902,13 +930,13 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
       : '';
     return '<li class="row"><div class="rk">' + rank + '</div><div class="bd">' +
       '<div class="nm"><span class="hg">손' + nm.name + '</span><span class="rom">' + nm.rom + '</span></div>' +
-      '<div class="hjline"><span class="hj2">孫' + combo.ha.h + combo.hb.h + '</span><span class="badge">' + cBadge(nm.c) + '</span>' + moodBadges + ((combo.ha.v || combo.hb.v) ? '<span class="badge unv" title="획수·오행을 검증하지 못한 한자예요">검증 전</span>' : '') + '</div>' +
+      '<div class="hjline"><span class="hj2">孫' + combo.ha.h + combo.hb.h + '</span><span class="badge">' + cBadge(nm.c) + '</span>' + moodBadges + (nm.natural === false ? '<span class="badge unv" title="자연스럽게 읽히는 이름 목록에 없는 조합이에요">목록 밖</span>' : '') + ((combo.ha.v || combo.hb.v) ? '<span class="badge unv" title="획수·오행을 검증하지 못한 한자예요">검증 전</span>' : '') + '</div>' +
       '<div class="chips">' + chip(combo.ha) + chip(combo.hb) + '</div>' +
       '<div class="snd">' + sndHTML(nm) + '</div>' +
       '<div class="suri">' + suriHTML(combo.n) + '</div>' + judgeHTML(nm, combo, slotC) +
       '<div class="meta">' + extra + '</div>' + sug + altHTML + '</div>' +
       '<div class="sc"><div class="num">' + Math.min(100, Math.round(score)) + '</div><div class="bar"><i style="width:' + Math.min(100, Math.round(score)) + '%"></i></div>' +
-      '<div class="parts">' + (nm.soundPct == null ? '' : '소리 ' + Math.min(100, Math.round(nm.soundPct)) + '<br>') + '사주 ' + Math.round(saju) + '</div>' +
+      '<div class="parts">' + (nm.soundPct == null ? '' : '소리 ' + Math.round(nm.soundPct) + '<br>') + '사주 ' + Math.round(saju) + (nm.soundPct == null ? '' : '<br>선호 ' + Math.round(prefPct(nm))) + '</div>' +
       '<button class="star" data-k="' + k + '" aria-pressed="' + on + '" aria-label="후보에 담기">' + (on ? '★' : '☆') + '</button></div></li>';
   }
 
@@ -932,20 +960,10 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
     const names = buildNames(o);
     const base = Date.UTC(+m[1], +m[2] - 1, +m[3]);
     const perDays = [];
-    let sS = 0, sQ = 0, sN = 0;
     for (let off = -3; off <= 3; off++) {
       const dt0 = new Date(base + off * 86400000);
       const slots0 = dayData(dt0.getUTCFullYear(), dt0.getUTCMonth() + 1, dt0.getUTCDate());
-      const per0 = names.length ? sajuDay(slots0, names) : [];
-      per0.forEach(arr => arr.forEach(r => { sS += r.saju; sQ += r.saju * r.saju; sN++; }));
-      perDays.push({ slots: slots0, per: per0 });
-    }
-    const normS = makeNorm(sS, sQ, sN);
-    if (names.length) {
-      let nS = 0, nQ = 0;
-      names.forEach(nm => { nS += nm.soundRaw; nQ += nm.soundRaw * nm.soundRaw; });
-      const normN = makeNorm(nS, nQ, names.length);
-      names.forEach(nm => { nm.soundPct = normN(nm.soundRaw) + nm.bonus; });
+      perDays.push({ slots: slots0, per: names.length ? sajuDay(slots0, names) : [] });
     }
     const days = [];
     const sumC = names.map(nm => nm.combos.map(() => 0));
@@ -958,24 +976,24 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
       let top = [];
       if (names.length) {
         per.forEach((arr, i) => arr.forEach((r, ci) => {
-          const sc = mix(normS(r.saju), names[i].soundPct, ws);
+          const sc = finalScore(sajuScale(r.saju), names[i], ws);
           sumC[i][ci] += r.saju;
           minC[i][ci] = Math.min(minC[i][ci], sc);
           maxC[i][ci] = Math.max(maxC[i][ci], sc);
         }));
-        top = dayTop(names, per, ws, normS);
+        top = dayTop(names, per, ws);
       }
       days.push({ off, y, mo, d, wd: dt.getUTCDay(), slots, top });
     }
     const avgItems = names.map((nm, i) => {
       const arr = nm.combos.map((c, ci) => {
-        const saju = normS(sumC[i][ci] / 7);
-        return { ci, saju, score: mix(saju, nm.soundPct, ws) };
+        const saju = sajuScale(sumC[i][ci] / 7);
+        return { ci, saju, score: finalScore(saju, nm, ws) };
       }).sort((x, y) => y.score - x.score);
       const b = arr[0];
       return { i, nm, score: b.score, best: b, min: minC[i][b.ci], max: maxC[i][b.ci], alts: arr.slice(1, 3) };
     });
-    return { names, days, avgTop: pickTop(avgItems, 5), o, normS: sN > 20 ? normS : null };
+    return { names, days, avgTop: pickTop(avgItems, 5), o };
   }
 
   function offLabel(off) { return off === 0 ? '예정일' : (off > 0 ? '+' : '−') + Math.abs(off) + '일'; }
@@ -1037,7 +1055,7 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
     if (r.err) { box.innerHTML = '<div class="empty">' + r.err + '</div>'; return; }
     if (!state) { box.innerHTML = '<div class="empty">출산 예정일을 먼저 입력해 주세요.</div>'; return; }
     const nm = r.nm;
-    const norm = state.normS || (x => Math.max(0, Math.min(100, x)));
+    const norm = sajuScale;
     const per = state.days.map(d => sajuDay(d.slots, [nm])[0]);
     const day = state.days[sel];
     const items = nm.combos.map((c, ci) => {
@@ -1099,7 +1117,8 @@ function mix(sj, sn, ws) { return ws * sj + (1 - ws) * sn + 0.005 * (sj + sn); }
   function updateVals() {
     const w = +$('#ws').value, u = +$('#uq').value;
     $('#wsv').textContent = '소리 ' + (100 - w) + ' : 사주 ' + w;
-    $('#uqv').textContent = '독특함 ' + u;
+    $('#uqv').textContent = STYLES[u].k;
+    $('#openhint').hidden = u < 3;
   }
   let timer = null;
   function schedule() { updateVals(); clearTimeout(timer); timer = setTimeout(renderAll, 60); }
